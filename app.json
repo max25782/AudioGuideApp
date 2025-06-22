@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "AudioGuideApp",
+    "name": "Аудиогид",
     "slug": "AudioGuideApp",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -13,17 +13,43 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Приложению необходим доступ к геолокации для определения вашего местоположения и показа ближайших точек интереса.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Приложению необходим доступ к геолокации для автоматического воспроизведения аудиогида при приближении к точкам интереса.",
+        "UIBackgroundModes": ["location", "audio"]
+      },
+      "config": {
+        "googleMapsApiKey": "AIzaSyDF3H6Q_xtm5f3xAeIC4V2UZ9En6wqRllM"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_BACKGROUND_LOCATION"
+      ],
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyDF3H6Q_xtm5f3xAeIC4V2UZ9En6wqRllM"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Приложению необходим доступ к геолокации для определения вашего местоположения и показа ближайших точек интереса."
+        }
+      ]
+    ]
   }
 }
