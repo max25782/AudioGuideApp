@@ -1,13 +1,19 @@
-export type PointCategory = 'historical' | 'religious' | 'children' | 'nature' | 'culture' | 'tourism' | 'architecture' | 'unknown';
+export type PointCategory = 'historical' | 'religious' | 'children' | 'nature' | 'culture' | 'tourism' | 'architecture' | 'amenity' | 'leisure';
 
 export interface PointOfInterest {
-  id: string | number;
+  id: string;
+  name: string;
+  category: PointCategory;
+  coordinates: {
+    latitude: number;
+    longitude: number;
+  };
+  // Обязательные поля для совместимости
   title: string;
   description: string;
+  audioFilePath: string;
   latitude: number;
   longitude: number;
-  category: PointCategory;
-  audioFilePath: string;
 }
 
 export interface Location {

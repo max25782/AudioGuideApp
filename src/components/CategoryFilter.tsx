@@ -1,112 +1,91 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import { Category } from '../types';
+import { PointCategory } from '../types';
 
-interface CategoryFilterProps {
-  categories: Category[];
-  selectedCategory: string | null;
-  onCategorySelect: (categoryId: string | null) => void;
+export interface CategoryFilterProps {
+  categories: PointCategory[];
+  selectedCategory: PointCategory | 'all';
+  onCategorySelect: (categoryId: PointCategory | 'all') => void;
+  getCategoryName: (category: PointCategory) => string;
+  getCategoryColor: (category: PointCategory) => string;
 }
 
-const CategoryFilter: React.FC<CategoryFilterProps> = ({
+export default function CategoryFilter({
   categories,
   selectedCategory,
   onCategorySelect,
-}) => {
-  const handleCategoryPress = (categoryId: string) => {
-    if (selectedCategory === categoryId) {
-      onCategorySelect(null); // Снимаем фильтр
-    } else {
-      onCategorySelect(categoryId);
-    }
+  getCategoryName,
+  getCategoryColor,
+}: CategoryFilterProps) {
+  const allCategories: (PointCategory | 'all')[] = ['all', ...categories];
+
+  const renderCategory = (categoryId: PointCategory | 'all') => {
+    const isSelected = selectedCategory === categoryId;
+    const categoryName = categoryId === 'all' ? 'Все' : getCategoryName(categoryId);
+    const categoryColor = categoryId === 'all' ? '#007AFF' : getCategoryColor(categoryId);
+
+    return (
+      <TouchableOpacity
+        key={categoryId}
+        style={[
+          styles.categoryButton,
+          isSelected && { backgroundColor: categoryColor },
+          !isSelected && { borderColor: categoryColor, borderWidth: 1 },
+        ]}
+        onPress={() => onCategorySelect(categoryId)}
+      >
+        <Text
+          style={[
+            styles.categoryText,
+            isSelected && { color: '#fff' },
+            !isSelected && { color: categoryColor },
+          ]}
+        >
+          {categoryName}
+        </Text>
+      </TouchableOpacity>
+    );
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Категории</Text>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scrollView}>
-        <TouchableOpacity
-          style={[
-            styles.categoryButton,
-            selectedCategory === null && styles.selectedCategory,
-          ]}
-          onPress={() => onCategorySelect(null)}
-        >
-          <Text style={[
-            styles.categoryText,
-            selectedCategory === null && styles.selectedCategoryText,
-          ]}>
-            Все
-          </Text>
-        </TouchableOpacity>
-        
-        {categories.map((category) => (
-          <TouchableOpacity
-            key={category.id}
-            style={[
-              styles.categoryButton,
-              { backgroundColor: category.color },
-              selectedCategory === category.id && styles.selectedCategory,
-            ]}
-            onPress={() => handleCategoryPress(category.id)}
-          >
-            <Text style={[
-              styles.categoryText,
-              selectedCategory === category.id && styles.selectedCategoryText,
-            ]}>
-              {category.name}
-            </Text>
-          </TouchableOpacity>
-        ))}
+      <ScrollView 
+        horizontal 
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent}
+      >
+        {allCategories.map(renderCategory)}
       </ScrollView>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 10,
-    backgroundColor: '#fff',
+    paddingVertical: 15,
+    paddingHorizontal: 20,
   },
   title: {
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 10,
-    paddingHorizontal: 15,
     color: '#333',
   },
-  scrollView: {
-    paddingHorizontal: 10,
+  scrollContent: {
+    paddingRight: 20,
   },
   categoryButton: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 15,
     paddingVertical: 8,
-    marginHorizontal: 5,
     borderRadius: 20,
-    backgroundColor: '#f0f0f0',
-    minWidth: 80,
+    marginRight: 10,
     alignItems: 'center',
-  },
-  selectedCategory: {
-    backgroundColor: '#007AFF',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    justifyContent: 'center',
+    minHeight: 36,
   },
   categoryText: {
     fontSize: 14,
-    fontWeight: '500',
-    color: '#333',
+    fontWeight: '600',
   },
-  selectedCategoryText: {
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-});
-
-export default CategoryFilter; 
+}); 

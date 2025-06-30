@@ -1,152 +1,112 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
-import { PointOfInterest } from '../types';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
+import { PointOfInterest, PointCategory } from '../types';
 
-interface PointsListProps {
+export interface PointsListProps {
   points: PointOfInterest[];
   onPointPress: (point: PointOfInterest) => void;
-  onWazePress: (point: PointOfInterest) => void;
   onPlayAudio: (point: PointOfInterest) => void;
-  isAudioPlaying: boolean;
-  currentPlayingPoint: PointOfInterest | null;
+  onOpenInWaze: (point: PointOfInterest) => void;
+  formatPointInfo: (point: PointOfInterest) => { title: string; subtitle: string; coords: string };
+  getCategoryColor: (category: PointCategory) => string;
+  refreshing?: boolean;
+  onRefresh?: () => void;
 }
 
-const PointsList: React.FC<PointsListProps> = ({
+export default function PointsList({
   points,
   onPointPress,
-  onWazePress,
   onPlayAudio,
-  isAudioPlaying,
-  currentPlayingPoint,
-}) => {
-  const getCategoryColor = (category: string) => {
-    switch (category) {
-      case 'historical':
-        return '#4ECDC4';
-      case 'religious':
-        return '#45B7D1';
-      case 'children':
-        return '#96CEB4';
-      case 'nature':
-        return '#FFEAA7';
-      case 'culture':
-        return '#C39BD3';
-      case 'tourism':
-        return '#F7DC6F';
-      case 'architecture':
-        return '#E59866';
-      default:
-        return '#DDA0DD';
-    }
-  };
-
-  const getCategoryDisplayName = (category: string) => {
-    switch (category) {
-      case 'historical':
-        return 'Исторический';
-      case 'religious':
-        return 'Религиозный';
-      case 'children':
-        return 'Детский';
-      case 'nature':
-        return 'Природный';
-      case 'culture':
-        return 'Культура';
-      case 'tourism':
-        return 'Туризм';
-      case 'architecture':
-        return 'Архитектура';
-      default:
-        return category;
-    }
-  };
-
+  onOpenInWaze,
+  formatPointInfo,
+  getCategoryColor,
+  refreshing = false,
+  onRefresh,
+}: PointsListProps) {
   const renderPoint = ({ item }: { item: PointOfInterest }) => {
-    const isCurrentlyPlaying = currentPlayingPoint?.id === item.id && isAudioPlaying;
-    
+    const pointInfo = formatPointInfo(item);
+    const categoryColor = getCategoryColor(item.category);
+
     return (
       <TouchableOpacity
-        style={styles.pointItem}
+        style={[styles.pointItem, { borderLeftColor: categoryColor }]}
         onPress={() => onPointPress(item)}
       >
-        <View style={styles.pointHeader}>
-          <Text style={styles.pointTitle}>{item.title}</Text>
-          <View style={[
-            styles.categoryBadge,
-            { backgroundColor: getCategoryColor(item.category) }
-          ]}>
-            <Text style={styles.categoryText}>{getCategoryDisplayName(item.category)}</Text>
-          </View>
+        <View style={styles.pointInfo}>
+          <Text style={styles.pointTitle}>{pointInfo.title}</Text>
+          <Text style={styles.pointSubtitle}>{pointInfo.subtitle}</Text>
+          <Text style={styles.pointCoords}>{pointInfo.coords}</Text>
         </View>
         
-        <Text style={styles.pointDescription} numberOfLines={2}>
-          {item.description}
-        </Text>
-        
-        <View style={styles.pointActions}>
+        <View style={styles.buttonsContainer}>
           <TouchableOpacity
-            style={[styles.actionButton, styles.playButton]}
+            style={[styles.actionButton, styles.audioButton]}
             onPress={() => onPlayAudio(item)}
           >
-            <Text style={styles.actionButtonText}>
-              {isCurrentlyPlaying ? '⏸️ Пауза' : '▶️ Слушать'}
-            </Text>
+            <Text style={styles.buttonText}>🎵</Text>
           </TouchableOpacity>
           
           <TouchableOpacity
             style={[styles.actionButton, styles.wazeButton]}
-            onPress={() => onWazePress(item)}
+            onPress={() => onOpenInWaze(item)}
           >
-            <Text style={styles.actionButtonText}>🗺️ Waze</Text>
+            <Text style={styles.buttonText}>🗺️</Text>
           </TouchableOpacity>
         </View>
       </TouchableOpacity>
     );
   };
 
-  const renderEmptyList = () => (
-    <View style={styles.emptyContainer}>
-      <Text style={styles.emptyText}>Точки в этой категории не найдены</Text>
-      <Text style={styles.emptySubText}>Попробуйте выбрать другую категорию</Text>
-    </View>
+  const renderHeader = () => (
+    <Text style={styles.header}>Точки интереса ({points.length})</Text>
   );
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Ближайшие точки</Text>
-      <FlatList
-        data={points}
-        renderItem={renderPoint}
-        keyExtractor={(item) => item.id.toString()}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.listContainer}
-        ListEmptyComponent={renderEmptyList}
-      />
-    </View>
+    <FlatList
+      data={points}
+      keyExtractor={(item) => item.id}
+      renderItem={renderPoint}
+      ListHeaderComponent={renderHeader}
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={styles.listContent}
+      style={styles.list}
+      refreshControl={
+        onRefresh ? (
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor="#007AFF"
+          />
+        ) : undefined
+      }
+    />
   );
-};
+}
 
 const styles = StyleSheet.create({
-  container: {
+  list: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
+    paddingHorizontal: 20,
   },
-  title: {
+  header: {
     fontSize: 18,
     fontWeight: 'bold',
-    padding: 15,
+    marginBottom: 15,
+    marginTop: 10,
     color: '#333',
   },
-  listContainer: {
-    paddingHorizontal: 15,
+  listContent: {
     paddingBottom: 20,
-    flexGrow: 1,
   },
   pointItem: {
     backgroundColor: '#fff',
-    borderRadius: 12,
+    borderRadius: 10,
     padding: 15,
     marginBottom: 10,
+    borderLeftWidth: 4,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -156,74 +116,43 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
-  pointHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 8,
+  pointInfo: {
+    flex: 1,
+    marginRight: 10,
   },
   pointTitle: {
     fontSize: 16,
     fontWeight: 'bold',
     color: '#333',
-    flex: 1,
-  },
-  categoryBadge: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
-    marginLeft: 10,
-  },
-  categoryText: {
-    fontSize: 12,
-    fontWeight: '500',
-    color: '#fff',
-  },
-  pointDescription: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 12,
-    lineHeight: 20,
-  },
-  pointActions: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  actionButton: {
-    flex: 1,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginHorizontal: 4,
-  },
-  playButton: {
-    backgroundColor: '#28a745',
-  },
-  wazeButton: {
-    backgroundColor: '#007bff',
-  },
-  actionButtonText: {
-    color: '#fff',
-    fontSize: 14,
-    fontWeight: '500',
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  emptyText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#666',
     marginBottom: 5,
   },
-  emptySubText: {
+  pointSubtitle: {
     fontSize: 14,
-    color: '#888',
+    color: '#666',
+    marginBottom: 3,
   },
-});
-
-export default PointsList; 
+  pointCoords: {
+    fontSize: 12,
+    color: '#999',
+  },
+  buttonsContainer: {
+    flexDirection: 'row',
+    gap: 10,
+  },
+  actionButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  audioButton: {
+    backgroundColor: '#4CAF50',
+  },
+  wazeButton: {
+    backgroundColor: '#2196F3',
+  },
+  buttonText: {
+    fontSize: 16,
+  },
+}); 

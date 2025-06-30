@@ -181,7 +181,7 @@ class GeoJsonParser {
       return 'tourism';
     }
     
-    return 'unknown';
+    return 'amenity';
   }
 
   /**
@@ -198,7 +198,7 @@ class GeoJsonParser {
       culture: 'culture.mp3',
       tourism: 'tourism.mp3',
       architecture: 'architecture.mp3',
-      unknown: 'default.mp3',
+      amenity: 'amenity.mp3',
     };
     return audioFiles[category] || 'default.mp3';
   }
