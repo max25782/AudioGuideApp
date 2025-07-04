@@ -4,11 +4,22 @@ import { Asset } from 'expo-asset';
 // Статический маппинг аудиофайлов
 // Примечание: аудиофайлы должны быть добавлены в папку assets/audio/
 const audioFiles: { [key: string]: any } = {
-  // Раскомментируйте строки ниже после добавления аудиофайлов
-  // 'historical_center.mp3': require('../../assets/audio/historical_center.mp3'),
-  // 'cathedral.mp3': require('../../assets/audio/cathedral.mp3'),
-  // 'children_park.mp3': require('../../assets/audio/children_park.mp3'),
-  // 'nature_reserve.mp3': require('../../assets/audio/nature_reserve.mp3'),
+  // Примеры для первых точек интереса
+  'point_1.mp3': require('../../assets/audio/point_1.mp3'),
+  'point_2.mp3': require('../../assets/audio/point_2.mp3'),
+  'point_3.mp3': require('../../assets/audio/point_3.mp3'),
+  'point_4.mp3': require('../../assets/audio/point_4.mp3'),
+  'point_5.mp3': require('../../assets/audio/point_5.mp3'),
+  'point_6.mp3': require('../../assets/audio/point_6.mp3'),
+  'point_7.mp3': require('../../assets/audio/point_7.mp3'),
+  'point_8.mp3': require('../../assets/audio/point_8.mp3'),
+  'point_9.mp3': require('../../assets/audio/point_9.mp3'),
+  'point_10.mp3': require('../../assets/audio/point_10.mp3'),
+  
+  // Добавьте остальные файлы по мере их создания
+  // 'point_11.mp3': require('../../assets/audio/point_11.mp3'),
+  // 'point_12.mp3': require('../../assets/audio/point_12.mp3'),
+  // и так далее...
 };
 
 class AudioService {

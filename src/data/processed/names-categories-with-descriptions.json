@@ -18,7 +18,6 @@
       "longitude": 34.8047077
     },
     "description": "סינמה סיטי גלילות הוא קומפלקס קולנוע מודרני וגדול הממוקם באזור גלילות, סמוך לתל אביב. במקום יש מספר רב של אולמות קולנוע המציעים מגוון סרטים מקומיים ובינלאומיים, כולל הפקות הוליוודיות עדכניות, סרטי עצמאיים וסרטים למשפחות. הקומפלקס מצויד בטכנולוגיות הקרנה וסאונד מתקדמות, מושבים נוחים, ולעיתים כולל שירותים נוספים כמו קיוסקים, בתי קפה וחניה נוחה. זהו יעד פופולרי לבילוי ובידור לתושבי תל אביב והסביבה."
-
   },
   {
     "id": "point_3",
@@ -49,7 +48,6 @@
       "longitude": 34.8531172
     },
     "description": "סינמה פארק רעננה הוא מרכז בילוי ובידור הכולל בתי קולנוע, מסעדות, חנויות ופינות משחק לילדים. המקום מהו יעד פופולרי למשפחות ותושבי האזור, ומציע חוויית צפייה בסרטים באולמות מודרניים לצד אפשרויות בילוי מגוונות לכל הגילאים."
-
   },
   {
     "id": "point_6",
@@ -89,7 +87,7 @@
       "latitude": 30.5722139,
       "longitude": 34.8540708
     },
-    "description": "Красивое место для отдыха на природе"
+    "description": "מסלול הטיול מוביל את המטיילים לאחת הפסגות היפות והמרשימות ביותר בחומת ההרים התוחמת את מכתש רמון מדרום - שן רמון (נקודת גובה 698 מ'). השן הינה גוש בולט של סלעי יסוד (מחדר מגמטי) הבולט בגוונו הכהה על רקע ההרים הבהירים שמסביבו. מרבית המסלול נוח יחסית להליכה, אולם ההליכה לאורך הקיר הדרומי של המכתש, ובפרט ההעפלה לשן רמון מדרום, הופכים את הטיול למתאים למיטיבי לכת בלבד."
   },
   {
     "id": "point_10",
@@ -483,7 +481,7 @@
   },
   {
     "id": "point_49",
-    "name": "عيت نين",
+    "name": "עית נינ",
     "category": "nature",
     "coordinates": {
       "latitude": 32.6335014,
@@ -893,7 +891,7 @@
   },
   {
     "id": "point_90",
-    "name": "عين الحصن",
+    "name": "עינ אלחצנ",
     "category": "nature",
     "coordinates": {
       "latitude": 32.6416716,
@@ -953,7 +951,7 @@
   },
   {
     "id": "point_96",
-    "name": "عين تمار",
+    "name": "עינ תמאר",
     "category": "nature",
     "coordinates": {
       "latitude": 32.6277549,
@@ -1183,7 +1181,7 @@
   },
   {
     "id": "point_119",
-    "name": "عين طرعان",
+    "name": "עינ טרעאנ",
     "category": "nature",
     "coordinates": {
       "latitude": 32.7874961,
@@ -1363,7 +1361,7 @@
   },
   {
     "id": "point_137",
-    "name": "عين مرسان",
+    "name": "עינ מרסאנ",
     "category": "nature",
     "coordinates": {
       "latitude": 32.8528136,
@@ -1603,7 +1601,7 @@
   },
   {
     "id": "point_161",
-    "name": "عين غت حفر",
+    "name": "עינ ע׳ת חפר",
     "category": "nature",
     "coordinates": {
       "latitude": 32.7375,
@@ -1703,7 +1701,7 @@
   },
   {
     "id": "point_171",
-    "name": "عين شحور",
+    "name": "עינ שחור",
     "category": "nature",
     "coordinates": {
       "latitude": 32.7096467,
@@ -1793,7 +1791,7 @@
   },
   {
     "id": "point_180",
-    "name": "سبلن",
+    "name": "סבלנ",
     "category": "historical",
     "coordinates": {
       "latitude": 33.0164897,
@@ -1843,7 +1841,7 @@
   },
   {
     "id": "point_185",
-    "name": "عين عيلبون",
+    "name": "עינ עילבונ",
     "category": "nature",
     "coordinates": {
       "latitude": 32.842795,
@@ -1993,7 +1991,7 @@
   },
   {
     "id": "point_200",
-    "name": "خربة صونيم",
+    "name": "ח׳רבה צונימ",
     "category": "historical",
     "coordinates": {
       "latitude": 32.679167,
@@ -2003,7 +2001,7 @@
   },
   {
     "id": "point_201",
-    "name": "عين طابور",
+    "name": "עינ טאבור",
     "category": "nature",
     "coordinates": {
       "latitude": 32.6875026,
@@ -2053,7 +2051,7 @@
   },
   {
     "id": "point_206",
-    "name": "عين ميملا",
+    "name": "עינ מימלא",
     "category": "nature",
     "coordinates": {
       "latitude": 32.855556,
@@ -2223,7 +2221,7 @@
   },
   {
     "id": "point_223",
-    "name": "خربة الادار",
+    "name": "ח׳רבה אלאדאר",
     "category": "historical",
     "coordinates": {
       "latitude": 31.433333,
@@ -3693,7 +3691,7 @@
   },
   {
     "id": "point_370",
-    "name": "قمة الجبل يانوح",
+    "name": "קמה אלג׳בל יאנוח",
     "category": "nature",
     "coordinates": {
       "latitude": 32.984722,
@@ -3893,7 +3891,7 @@
   },
   {
     "id": "point_390",
-    "name": "عين دبوره",
+    "name": "עינ דבורה",
     "category": "nature",
     "coordinates": {
       "latitude": 32.6999999,
@@ -4203,7 +4201,7 @@
   },
   {
     "id": "point_421",
-    "name": "الشيخ الإسكندر",
+    "name": "אלשיח׳ אלאסכנדר",
     "category": "historical",
     "coordinates": {
       "latitude": 32.5125,
@@ -4603,7 +4601,7 @@
   },
   {
     "id": "point_461",
-    "name": "كويكات",
+    "name": "כויכאת",
     "category": "historical",
     "coordinates": {
       "latitude": 32.966667,
@@ -4693,7 +4691,7 @@
   },
   {
     "id": "point_470",
-    "name": "قصر السر",
+    "name": "קצר אלסר",
     "category": "historical",
     "coordinates": {
       "latitude": 31.0826372,
@@ -5003,7 +5001,7 @@
   },
   {
     "id": "point_501",
-    "name": "تلة تسان",
+    "name": "תלה תסאנ",
     "category": "nature",
     "coordinates": {
       "latitude": 31.183333,
@@ -5223,7 +5221,7 @@
   },
   {
     "id": "point_523",
-    "name": "عين زيمرات",
+    "name": "עינ זימראת",
     "category": "nature",
     "coordinates": {
       "latitude": 32.713889,
@@ -5423,7 +5421,7 @@
   },
   {
     "id": "point_543",
-    "name": "عين مقب",
+    "name": "עינ מקב",
     "category": "nature",
     "coordinates": {
       "latitude": 32.7041456,
@@ -5683,7 +5681,7 @@
   },
   {
     "id": "point_569",
-    "name": "عين ناطف",
+    "name": "עינ נאטפ",
     "category": "nature",
     "coordinates": {
       "latitude": 32.8394277,
@@ -5693,7 +5691,7 @@
   },
   {
     "id": "point_570",
-    "name": "غور مجد",
+    "name": "ע׳ור מג׳ד",
     "category": "nature",
     "coordinates": {
       "latitude": 32.908333,
@@ -6513,7 +6511,7 @@
   },
   {
     "id": "point_652",
-    "name": "عين صان",
+    "name": "עינ צאנ",
     "category": "nature",
     "coordinates": {
       "latitude": 32.679167,
@@ -6823,7 +6821,7 @@
   },
   {
     "id": "point_683",
-    "name": "عين رني",
+    "name": "עינ רני",
     "category": "nature",
     "coordinates": {
       "latitude": 32.722222,
@@ -6933,7 +6931,7 @@
   },
   {
     "id": "point_694",
-    "name": "عين رنانيم",
+    "name": "עינ רנאנימ",
     "category": "nature",
     "coordinates": {
       "latitude": 32.729167,
@@ -7163,7 +7161,7 @@
   },
   {
     "id": "point_717",
-    "name": "عين حيزر",
+    "name": "עינ חיזר",
     "category": "nature",
     "coordinates": {
       "latitude": 32.7131853,
@@ -7573,7 +7571,7 @@
   },
   {
     "id": "point_758",
-    "name": "خربة أوراق الشجر",
+    "name": "ח׳רבה אוראק אלשג׳ר",
     "category": "historical",
     "coordinates": {
       "latitude": 33.0366664,
@@ -7603,7 +7601,7 @@
   },
   {
     "id": "point_761",
-    "name": "الريبين",
+    "name": "אלריבינ",
     "category": "historical",
     "coordinates": {
       "latitude": 33.083299,
@@ -7833,7 +7831,7 @@
   },
   {
     "id": "point_784",
-    "name": "عين الناعورة",
+    "name": "עינ אלנאעורה",
     "category": "nature",
     "coordinates": {
       "latitude": 32.6152781,
@@ -7973,7 +7971,7 @@
   },
   {
     "id": "point_798",
-    "name": "عين عسل",
+    "name": "עינ עסל",
     "category": "nature",
     "coordinates": {
       "latitude": 32.959722,
@@ -8373,7 +8371,7 @@
   },
   {
     "id": "point_838",
-    "name": "عين ماهل",
+    "name": "עינ מאהל",
     "category": "nature",
     "coordinates": {
       "latitude": 32.730556,
@@ -8453,7 +8451,7 @@
   },
   {
     "id": "point_846",
-    "name": "الشيخ بريك",
+    "name": "אלשיח׳ בריכ",
     "category": "historical",
     "coordinates": {
       "latitude": 32.6739243,
@@ -8963,7 +8961,7 @@
   },
   {
     "id": "point_897",
-    "name": "مسجد اليعقوبي",
+    "name": "מסג׳ד אליעקובי",
     "category": "religious",
     "coordinates": {
       "latitude": 31.7761738,
@@ -9203,7 +9201,7 @@
   },
   {
     "id": "point_921",
-    "name": "روضة الفريا",
+    "name": "רוד׳ה אלפריא",
     "category": "amenity",
     "coordinates": {
       "latitude": 31.7868166,
@@ -9353,7 +9351,7 @@
   },
   {
     "id": "point_936",
-    "name": "مسجد الأتقياء",
+    "name": "מסג׳ד אלאתקיאء",
     "category": "religious",
     "coordinates": {
       "latitude": 31.872433,
@@ -9363,7 +9361,7 @@
   },
   {
     "id": "point_937",
-    "name": "مسجد عب الله بن رواحة",
+    "name": "מסג׳ד עב אללה בנ רואחה",
     "category": "religious",
     "coordinates": {
       "latitude": 31.8779849,
@@ -9383,7 +9381,7 @@
   },
   {
     "id": "point_939",
-    "name": "مسجد البشير",
+    "name": "מסג׳ד אלבשיר",
     "category": "religious",
     "coordinates": {
       "latitude": 31.8723765,
@@ -9393,7 +9391,7 @@
   },
   {
     "id": "point_940",
-    "name": "روضة المعرفة",
+    "name": "רוד׳ה אלמערפה",
     "category": "amenity",
     "coordinates": {
       "latitude": 31.8768764,
@@ -9403,7 +9401,7 @@
   },
   {
     "id": "point_941",
-    "name": "روضة علماء الجد",
+    "name": "רוד׳ה עלמאء אלג׳ד",
     "category": "amenity",
     "coordinates": {
       "latitude": 31.880231,
@@ -9423,7 +9421,7 @@
   },
   {
     "id": "point_943",
-    "name": "روضة علماء الجد",
+    "name": "רוד׳ה עלמאء אלג׳ד",
     "category": "amenity",
     "coordinates": {
       "latitude": 31.8777281,
@@ -9433,7 +9431,7 @@
   },
   {
     "id": "point_944",
-    "name": "روضة مدرسة ترتيل الإسلامية",
+    "name": "רוד׳ה מדרסה תרתיל אלאסלאמיה",
     "category": "amenity",
     "coordinates": {
       "latitude": 31.8742797,
@@ -9443,7 +9441,7 @@
   },
   {
     "id": "point_945",
-    "name": "روضة الفقيه النموذجية",
+    "name": "רוד׳ה אלפקיה אלנמוד׳ג׳יה",
     "category": "amenity",
     "coordinates": {
       "latitude": 31.8751443,
@@ -10073,7 +10071,7 @@
   },
   {
     "id": "point_1008",
-    "name": "الممصورة",
+    "name": "אלממצורה",
     "category": "historical",
     "coordinates": {
       "latitude": 33.1412832,
@@ -10083,7 +10081,7 @@
   },
   {
     "id": "point_1009",
-    "name": "الغسانية",
+    "name": "אלע׳סאניה",
     "category": "historical",
     "coordinates": {
       "latitude": 33.0736111,
@@ -10093,7 +10091,7 @@
   },
   {
     "id": "point_1010",
-    "name": "كواس",
+    "name": "כואס",
     "category": "historical",
     "coordinates": {
       "latitude": 33.0416666,
@@ -10103,7 +10101,7 @@
   },
   {
     "id": "point_1011",
-    "name": "خويخة",
+    "name": "ח׳ויח׳ה",
     "category": "historical",
     "coordinates": {
       "latitude": 33.0659086,
@@ -10113,7 +10111,7 @@
   },
   {
     "id": "point_1012",
-    "name": "مومسية",
+    "name": "מומסיה",
     "category": "historical",
     "coordinates": {
       "latitude": 33.0765536,
@@ -10123,7 +10121,7 @@
   },
   {
     "id": "point_1013",
-    "name": "عين الوردة",
+    "name": "עינ אלורדה",
     "category": "historical",
     "coordinates": {
       "latitude": 33.0343977,
@@ -10133,7 +10131,7 @@
   },
   {
     "id": "point_1014",
-    "name": "فزارة",
+    "name": "פזארה",
     "category": "historical",
     "coordinates": {
       "latitude": 33.0174145,
@@ -10163,7 +10161,7 @@
   },
   {
     "id": "point_1017",
-    "name": "الجوخدار",
+    "name": "אלג׳וח׳דאר",
     "category": "historical",
     "coordinates": {
       "latitude": 32.9166668,
@@ -10193,7 +10191,7 @@
   },
   {
     "id": "point_1020",
-    "name": "دبوسية",
+    "name": "דבוסיה",
     "category": "historical",
     "coordinates": {
       "latitude": 32.75,
@@ -10203,7 +10201,7 @@
   },
   {
     "id": "point_1021",
-    "name": "جبين",
+    "name": "ג׳בינ",
     "category": "historical",
     "coordinates": {
       "latitude": 32.7883993,
@@ -10213,7 +10211,7 @@
   },
   {
     "id": "point_1022",
-    "name": "الياقوس",
+    "name": "אליאקוס",
     "category": "historical",
     "coordinates": {
       "latitude": 32.7713689,
@@ -10223,7 +10221,7 @@
   },
   {
     "id": "point_1023",
-    "name": "كفر حارب",
+    "name": "כפר חארב",
     "category": "historical",
     "coordinates": {
       "latitude": 32.7596779,
@@ -10233,7 +10231,7 @@
   },
   {
     "id": "point_1024",
-    "name": "رجم الياقوس",
+    "name": "רג׳מ אליאקוס",
     "category": "historical",
     "coordinates": {
       "latitude": 32.7710802,
@@ -10243,7 +10241,7 @@
   },
   {
     "id": "point_1025",
-    "name": "كفر الماء",
+    "name": "כפר אלמאء",
     "category": "historical",
     "coordinates": {
       "latitude": 32.8100001,
@@ -10253,7 +10251,7 @@
   },
   {
     "id": "point_1026",
-    "name": "منطقة الزوية",
+    "name": "מנטקה אלזויה",
     "category": "historical",
     "coordinates": {
       "latitude": 32.75,
@@ -10263,7 +10261,7 @@
   },
   {
     "id": "point_1027",
-    "name": "عين كبريتية",
+    "name": "עינ כבריתיה",
     "category": "historical",
     "coordinates": {
       "latitude": 32.7194445,
@@ -10273,7 +10271,7 @@
   },
   {
     "id": "point_1028",
-    "name": "مزرعة ناب",
+    "name": "מזרעה נאב",
     "category": "historical",
     "coordinates": {
       "latitude": 32.8276434,
@@ -10283,7 +10281,7 @@
   },
   {
     "id": "point_1029",
-    "name": "حيتل",
+    "name": "חיתל",
     "category": "historical",
     "coordinates": {
       "latitude": 32.7995827,
@@ -10303,7 +10301,7 @@
   },
   {
     "id": "point_1031",
-    "name": "خربة عيون",
+    "name": "ח׳רבה עיונ",
     "category": "historical",
     "coordinates": {
       "latitude": 32.7192471,
@@ -10693,7 +10691,7 @@
   },
   {
     "id": "point_1070",
-    "name": "مغارة سوريك",
+    "name": "מע׳ארה סוריכ",
     "category": "nature",
     "coordinates": {
       "latitude": 32.9897742,
@@ -10733,7 +10731,7 @@
   },
   {
     "id": "point_1074",
-    "name": "نبي يعفوري",
+    "name": "נבי יעפורי",
     "category": "religious",
     "coordinates": {
       "latitude": 33.2414184,
@@ -10773,7 +10771,7 @@
   },
   {
     "id": "point_1078",
-    "name": "مسجد سعد وسعيد",
+    "name": "מסג׳ד סעד וסעיד",
     "category": "religious",
     "coordinates": {
       "latitude": 31.7852168,
@@ -10783,7 +10781,7 @@
   },
   {
     "id": "point_1079",
-    "name": "سجن الرسول بيتر",
+    "name": "סג׳נ אלרסול ביתר",
     "category": "religious",
     "coordinates": {
       "latitude": 31.7809543,
@@ -11383,7 +11381,7 @@
   },
   {
     "id": "point_1139",
-    "name": "نبي خزوري",
+    "name": "נבי ח׳זורי",
     "category": "religious",
     "coordinates": {
       "latitude": 33.2499965,
@@ -12013,7 +12011,7 @@
   },
   {
     "id": "point_1202",
-    "name": "دير أخوة الصغير يسوع",
+    "name": "דיר אח׳וה אלצע׳יר יסוע",
     "category": "religious",
     "coordinates": {
       "latitude": 32.6990233,
@@ -13933,7 +13931,7 @@
   },
   {
     "id": "point_1394",
-    "name": "النبي روبين",
+    "name": "אלנבי רובינ",
     "category": "historical",
     "coordinates": {
       "latitude": 31.9291317,
@@ -14693,7 +14691,7 @@
   },
   {
     "id": "point_1470",
-    "name": "Old Olive Tree/زيتونة البدوي/أراضي زراعية\tAl badawi's olive tree /agricultural land",
+    "name": "Old Olive Tree/זיתונה אלבדוי/אראד׳י זראעיה\tAl badawi's olive tree /agricultural land",
     "category": "nature",
     "coordinates": {
       "latitude": 31.7389612,
@@ -15693,7 +15691,7 @@
   },
   {
     "id": "point_1570",
-    "name": "نادي جبل الزيتون",
+    "name": "נאדי ג׳בל אלזיתונ",
     "category": "architecture",
     "coordinates": {
       "latitude": 31.779919,
@@ -15703,7 +15701,7 @@
   },
   {
     "id": "point_1571",
-    "name": "دير فاجا",
+    "name": "דיר פאג׳א",
     "category": "religious",
     "coordinates": {
       "latitude": 31.7773993,
@@ -15713,7 +15711,7 @@
   },
   {
     "id": "point_1572",
-    "name": "دير بيت سيدنا إبراهيم",
+    "name": "דיר בית סידנא אבראהימ",
     "category": "religious",
     "coordinates": {
       "latitude": 31.7716085,
@@ -15723,7 +15721,7 @@
   },
   {
     "id": "point_1573",
-    "name": "روضة أم ليسون-رأس العامود",
+    "name": "רוד׳ה אמ ליסונ-ראס אלעאמוד",
     "category": "amenity",
     "coordinates": {
       "latitude": 31.7698003,
@@ -15733,7 +15731,7 @@
   },
   {
     "id": "point_1574",
-    "name": "روضة بنات سلوان",
+    "name": "רוד׳ה בנאת סלואנ",
     "category": "amenity",
     "coordinates": {
       "latitude": 31.771589,
@@ -15753,7 +15751,7 @@
   },
   {
     "id": "point_1576",
-    "name": "مدرسة روضة القدس النموذجية",
+    "name": "מדרסה רוד׳ה אלקדס אלנמוד׳ג׳יה",
     "category": "amenity",
     "coordinates": {
       "latitude": 31.7707051,
@@ -15763,7 +15761,7 @@
   },
   {
     "id": "point_1577",
-    "name": "نادي سلوان الرياضي مستوصف البابا بولس السادس",
+    "name": "נאדי סלואנ אלריאד׳י מסתוצפ אלבאבא בולס אלסאדס",
     "category": "architecture",
     "coordinates": {
       "latitude": 31.7729632,
@@ -15783,7 +15781,7 @@
   },
   {
     "id": "point_1579",
-    "name": "المسرح الوطني الفلسطيني / الحكواتي",
+    "name": "אלמסרח אלוטני אלפלסטיני / אלחכואתי",
     "category": "culture",
     "coordinates": {
       "latitude": 31.7883379,
@@ -16173,7 +16171,7 @@
   },
   {
     "id": "point_1618",
-    "name": "جامع الثوري",
+    "name": "ג׳אמע אלת׳ורי",
     "category": "religious",
     "coordinates": {
       "latitude": 31.7655181,
@@ -16233,7 +16231,7 @@
   },
   {
     "id": "point_1624",
-    "name": "بيوت قديمة Old houses",
+    "name": "ביות קדימה Old houses",
     "category": "historical",
     "coordinates": {
       "latitude": 31.7350039,
@@ -16243,7 +16241,7 @@
   },
   {
     "id": "point_1625",
-    "name": "قبور Graves",
+    "name": "קבור Graves",
     "category": "religious",
     "coordinates": {
       "latitude": 31.7375868,
@@ -16633,7 +16631,7 @@
   },
   {
     "id": "point_1664",
-    "name": "بارك هَسلَعيم",
+    "name": "בארכ הَסלَעימ",
     "category": "tourism",
     "coordinates": {
       "latitude": 32.973276,
@@ -17313,7 +17311,7 @@
   },
   {
     "id": "point_1732",
-    "name": "متجر الهدايا",
+    "name": "מתג׳ר אלהדאיא",
     "category": "tourism",
     "coordinates": {
       "latitude": 32.704922,
@@ -17323,7 +17321,7 @@
   },
   {
     "id": "point_1733",
-    "name": "اليونانية الأسقف الأرثوذكسية (القلعي) الكهوف",
+    "name": "אליונאניה אלאסקפ אלארת׳וד׳כסיה (אלקלעי) אלכהופ",
     "category": "tourism",
     "coordinates": {
       "latitude": 32.7053171,
@@ -17333,7 +17331,7 @@
   },
   {
     "id": "point_1734",
-    "name": "كنيسة المجمع",
+    "name": "כניסה אלמג׳מע",
     "category": "religious",
     "coordinates": {
       "latitude": 32.7034589,
@@ -17343,7 +17341,7 @@
   },
   {
     "id": "point_1735",
-    "name": "الكنيسة المعمدانية",
+    "name": "אלכניסה אלמעמדאניה",
     "category": "religious",
     "coordinates": {
       "latitude": 32.7057247,
@@ -17493,7 +17491,7 @@
   },
   {
     "id": "point_1750",
-    "name": "كلية غرناطة",
+    "name": "כליה ע׳רנאטה",
     "category": "architecture",
     "coordinates": {
       "latitude": 32.7449646,
@@ -17523,7 +17521,7 @@
   },
   {
     "id": "point_1753",
-    "name": "بئر بورين",
+    "name": "ביר בורינ",
     "category": "historical",
     "coordinates": {
       "latitude": 32.4192471,
@@ -17673,7 +17671,7 @@
   },
   {
     "id": "point_1768",
-    "name": "مسجد سلمة",
+    "name": "מסג׳ד סלמה",
     "category": "historical",
     "coordinates": {
       "latitude": 32.049975,
@@ -17773,7 +17771,7 @@
   },
   {
     "id": "point_1778",
-    "name": "مقام النبي سبلان",
+    "name": "מקאמ אלנבי סבלאנ",
     "category": "religious",
     "coordinates": {
       "latitude": 33.0115464,
@@ -18043,7 +18041,7 @@
   },
   {
     "id": "point_1805",
-    "name": "إسكان أبو أشرف",
+    "name": "אסכאנ אבו אשרפ",
     "category": "architecture",
     "coordinates": {
       "latitude": 31.865786,
@@ -18233,7 +18231,7 @@
   },
   {
     "id": "point_1824",
-    "name": "عين حوتم",
+    "name": "עינ חותמ",
     "category": "nature",
     "coordinates": {
       "latitude": 33.0045072,
@@ -18243,7 +18241,7 @@
   },
   {
     "id": "point_1825",
-    "name": "عين زبول",
+    "name": "עינ זבול",
     "category": "nature",
     "coordinates": {
       "latitude": 33.006897,
@@ -18253,7 +18251,7 @@
   },
   {
     "id": "point_1826",
-    "name": "عين حلقة",
+    "name": "עינ חלקה",
     "category": "nature",
     "coordinates": {
       "latitude": 33.0056801,
@@ -18443,7 +18441,7 @@
   },
   {
     "id": "point_1845",
-    "name": "أضواء الوديان",
+    "name": "אד׳ואء אלודיאנ",
     "category": "architecture",
     "coordinates": {
       "latitude": 32.4922503,
@@ -18503,7 +18501,7 @@
   },
   {
     "id": "point_1851",
-    "name": "مسجد صلاح الدين",
+    "name": "מסג׳ד צלאח אלדינ",
     "category": "religious",
     "coordinates": {
       "latitude": 32.8718251,
@@ -18583,7 +18581,7 @@
   },
   {
     "id": "point_1859",
-    "name": "مسجد الأمل",
+    "name": "מסג׳ד אלאמל",
     "category": "religious",
     "coordinates": {
       "latitude": 32.9673121,
@@ -18593,7 +18591,7 @@
   },
   {
     "id": "point_1860",
-    "name": "مسجد الرحمة",
+    "name": "מסג׳ד אלרחמה",
     "category": "religious",
     "coordinates": {
       "latitude": 32.9669278,
@@ -18653,7 +18651,7 @@
   },
   {
     "id": "point_1866",
-    "name": "المعهد الوطني للموسيقى",
+    "name": "אלמעהד אלוטני ללמוסיקא",
     "category": "amenity",
     "coordinates": {
       "latitude": 31.786194,
@@ -18903,7 +18901,7 @@
   },
   {
     "id": "point_1891",
-    "name": "مسجد الإمام الشافعي",
+    "name": "מסג׳ד אלאמאמ אלשאפעי",
     "category": "religious",
     "coordinates": {
       "latitude": 31.7701991,
@@ -18963,7 +18961,7 @@
   },
   {
     "id": "point_1897",
-    "name": "كنيسة الادوار",
+    "name": "כניסה אלאדואר",
     "category": "religious",
     "coordinates": {
       "latitude": 31.7816995,
@@ -19093,7 +19091,7 @@
   },
   {
     "id": "point_1910",
-    "name": "روضات رأس العامود",
+    "name": "רוד׳את ראס אלעאמוד",
     "category": "amenity",
     "coordinates": {
       "latitude": 31.7689799,
@@ -19103,7 +19101,7 @@
   },
   {
     "id": "point_1911",
-    "name": "روضة منيه",
+    "name": "רוד׳ה מניה",
     "category": "amenity",
     "coordinates": {
       "latitude": 31.7716936,
@@ -19113,7 +19111,7 @@
   },
   {
     "id": "point_1912",
-    "name": "مسجد محمد الفاتح",
+    "name": "מסג׳ד מחמד אלפאתח",
     "category": "religious",
     "coordinates": {
       "latitude": 31.774092,
@@ -19123,7 +19121,7 @@
   },
   {
     "id": "point_1913",
-    "name": "دير سانت مارثا",
+    "name": "דיר סאנת מארת׳א",
     "category": "religious",
     "coordinates": {
       "latitude": 31.7707234,
@@ -19133,7 +19131,7 @@
   },
   {
     "id": "point_1914",
-    "name": "دير",
+    "name": "דיר",
     "category": "religious",
     "coordinates": {
       "latitude": 31.7760949,
@@ -19143,7 +19141,7 @@
   },
   {
     "id": "point_1915",
-    "name": "مدرسة وروضة نور القدس",
+    "name": "מדרסה ורוד׳ה נור אלקדס",
     "category": "amenity",
     "coordinates": {
       "latitude": 31.7705841,
@@ -19153,7 +19151,7 @@
   },
   {
     "id": "point_1916",
-    "name": "راهبات المحبة مار منصور",
+    "name": "ראהבאת אלמחבה מאר מנצור",
     "category": "religious",
     "coordinates": {
       "latitude": 31.7720645,
@@ -19163,7 +19161,7 @@
   },
   {
     "id": "point_1917",
-    "name": "مسجد الزهراء",
+    "name": "מסג׳ד אלזהראء",
     "category": "religious",
     "coordinates": {
       "latitude": 31.7753802,
@@ -19243,7 +19241,7 @@
   },
   {
     "id": "point_1925",
-    "name": "مسجد أبو عبيدة",
+    "name": "מסג׳ד אבו עבידה",
     "category": "religious",
     "coordinates": {
       "latitude": 31.8106157,
@@ -19253,7 +19251,7 @@
   },
   {
     "id": "point_1926",
-    "name": "جامع الخلافة",
+    "name": "ג׳אמע אלח׳לאפה",
     "category": "religious",
     "coordinates": {
       "latitude": 31.811198,
@@ -19263,7 +19261,7 @@
   },
   {
     "id": "point_1927",
-    "name": "جامع الهدى",
+    "name": "ג׳אמע אלהדא",
     "category": "religious",
     "coordinates": {
       "latitude": 31.8118779,
@@ -19273,7 +19271,7 @@
   },
   {
     "id": "point_1928",
-    "name": "مسجد الرحمن",
+    "name": "מסג׳ד אלרחמנ",
     "category": "religious",
     "coordinates": {
       "latitude": 31.8130803,
@@ -19283,7 +19281,7 @@
   },
   {
     "id": "point_1929",
-    "name": "مسجد الدعوة إلى الله",
+    "name": "מסג׳ד אלדעוה אלא אללה",
     "category": "religious",
     "coordinates": {
       "latitude": 31.8148101,
@@ -19293,7 +19291,7 @@
   },
   {
     "id": "point_1930",
-    "name": "مغربي للموسيقى",
+    "name": "מע׳רבי ללמוסיקא",
     "category": "amenity",
     "coordinates": {
       "latitude": 31.7848051,
@@ -19323,7 +19321,7 @@
   },
   {
     "id": "point_1933",
-    "name": "نصب تذكاري لشهداء مخيم شعفاط",
+    "name": "נצב תד׳כארי לשהדאء מח׳ימ שעפאט",
     "category": "historical",
     "coordinates": {
       "latitude": 31.8095851,
@@ -19513,7 +19511,7 @@
   },
   {
     "id": "point_1952",
-    "name": "مطعم أسماك موسى",
+    "name": "מטעמ אסמאכ מוסא",
     "category": "tourism",
     "coordinates": {
       "latitude": 32.5372086,
@@ -19523,7 +19521,7 @@
   },
   {
     "id": "point_1953",
-    "name": "مسجد",
+    "name": "מסג׳ד",
     "category": "religious",
     "coordinates": {
       "latitude": 32.5397514,
@@ -19633,7 +19631,7 @@
   },
   {
     "id": "point_1964",
-    "name": "بيت الفن الفلسطيني",
+    "name": "בית אלפנ אלפלסטיני",
     "category": "amenity",
     "coordinates": {
       "latitude": 31.8091898,
@@ -20083,7 +20081,7 @@
   },
   {
     "id": "point_2009",
-    "name": "خدمة الخيرية - الأب غوانيلا",
+    "name": "ח׳דמה אלח׳יריה - אלאב ע׳ואנילא",
     "category": "religious",
     "coordinates": {
       "latitude": 32.6977505,
@@ -20413,7 +20411,7 @@
   },
   {
     "id": "point_2042",
-    "name": "قوس إيك هومو",
+    "name": "קוס איכ הומו",
     "category": "historical",
     "coordinates": {
       "latitude": 31.7802556,
@@ -20633,7 +20631,7 @@
   },
   {
     "id": "point_2064",
-    "name": "الكنيسة البيزنطية",
+    "name": "אלכניסה אלביזנטיה",
     "category": "historical",
     "coordinates": {
       "latitude": 31.29381,
@@ -21663,7 +21661,7 @@
   },
   {
     "id": "point_2167",
-    "name": "دير اللطرون البنيديكتي",
+    "name": "דיר אללטרונ אלבנידיכתי",
     "category": "religious",
     "coordinates": {
       "latitude": 31.807958,
@@ -21923,7 +21921,7 @@
   },
   {
     "id": "point_2193",
-    "name": "أربعة أثل",
+    "name": "ארבעה את׳ל",
     "category": "nature",
     "coordinates": {
       "latitude": 31.2960509,
@@ -22343,7 +22341,7 @@
   },
   {
     "id": "point_2235",
-    "name": "مدرسة السواحرة الابتدائية للبنات",
+    "name": "מדרסה אלסואחרה אלאבתדאייה ללבנאת",
     "category": "architecture",
     "coordinates": {
       "latitude": 31.7458374,
@@ -22353,7 +22351,7 @@
   },
   {
     "id": "point_2236",
-    "name": "جامع الحاج عواد",
+    "name": "ג׳אמע אלחאג׳ עואד",
     "category": "religious",
     "coordinates": {
       "latitude": 31.7434575,
@@ -22463,7 +22461,7 @@
   },
   {
     "id": "point_2247",
-    "name": "هوطه ٦",
+    "name": "הוטה ٦",
     "category": "nature",
     "coordinates": {
       "latitude": 32.9769913,
@@ -22733,7 +22731,7 @@
   },
   {
     "id": "point_2274",
-    "name": "الكنيسة الكاثوليكية اليونانية",
+    "name": "אלכניסה אלכאת׳וליכיה אליונאניה",
     "category": "religious",
     "coordinates": {
       "latitude": 32.7210574,
@@ -24273,7 +24271,7 @@
   },
   {
     "id": "point_2428",
-    "name": "اسطبلات سليمان",
+    "name": "אסטבלאת סלימאנ",
     "category": "historical",
     "coordinates": {
       "latitude": 31.7766572,
@@ -24283,7 +24281,7 @@
   },
   {
     "id": "point_2429",
-    "name": "ماكدونالدز",
+    "name": "מאכדונאלדז",
     "category": "architecture",
     "coordinates": {
       "latitude": 32.6388925,
@@ -24293,7 +24291,7 @@
   },
   {
     "id": "point_2430",
-    "name": "مسجد نين",
+    "name": "מסג׳ד נינ",
     "category": "religious",
     "coordinates": {
       "latitude": 32.6305408,
@@ -25003,7 +25001,7 @@
   },
   {
     "id": "point_2501",
-    "name": "عين جمل",
+    "name": "עינ ג׳מל",
     "category": "nature",
     "coordinates": {
       "latitude": 32.9662022,
@@ -25333,7 +25331,7 @@
   },
   {
     "id": "point_2534",
-    "name": "محطة الصليب 4",
+    "name": "מחטה אלצליב 4",
     "category": "historical",
     "coordinates": {
       "latitude": 31.7798913,
@@ -25353,7 +25351,7 @@
   },
   {
     "id": "point_2536",
-    "name": "مدرسة بيت الحكمة",
+    "name": "מדרסה בית אלחכמה",
     "category": "architecture",
     "coordinates": {
       "latitude": 31.3939575,
@@ -25363,7 +25361,7 @@
   },
   {
     "id": "point_2537",
-    "name": "مسجد الاخاء",
+    "name": "מסג׳ד אלאח׳אء",
     "category": "religious",
     "coordinates": {
       "latitude": 31.3905546,
@@ -25383,7 +25381,7 @@
   },
   {
     "id": "point_2539",
-    "name": "بيت عمر Omar's house",
+    "name": "בית עמר Omar's house",
     "category": "historical",
     "coordinates": {
       "latitude": 31.7367929,
@@ -25393,7 +25391,7 @@
   },
   {
     "id": "point_2540",
-    "name": "جامع شعفاط الشرقي (علي بن أبي طالب)",
+    "name": "ג׳אמע שעפאט אלשרקי (עלי בנ אבי טאלב)",
     "category": "religious",
     "coordinates": {
       "latitude": 31.8143878,
@@ -25403,7 +25401,7 @@
   },
   {
     "id": "point_2541",
-    "name": "جامع شعفاط الغربي",
+    "name": "ג׳אמע שעפאט אלע׳רבי",
     "category": "religious",
     "coordinates": {
       "latitude": 31.8134227,
@@ -25443,7 +25441,7 @@
   },
   {
     "id": "point_2545",
-    "name": "بيت المعلم حنا",
+    "name": "בית אלמעלמ חנא",
     "category": "architecture",
     "coordinates": {
       "latitude": 32.9769569,
@@ -25453,7 +25451,7 @@
   },
   {
     "id": "point_2546",
-    "name": "قرية الربيع",
+    "name": "קריה אלרביע",
     "category": "nature",
     "coordinates": {
       "latitude": 32.9767632,
@@ -25473,7 +25471,7 @@
   },
   {
     "id": "point_2548",
-    "name": "صالح أبو ملاح",
+    "name": "צאלח אבו מלאח",
     "category": "religious",
     "coordinates": {
       "latitude": 32.9781365,
@@ -25483,7 +25481,7 @@
   },
   {
     "id": "point_2549",
-    "name": "الجدة جميلة",
+    "name": "אלג׳דה ג׳מילה",
     "category": "architecture",
     "coordinates": {
       "latitude": 32.9799562,
@@ -25493,7 +25491,7 @@
   },
   {
     "id": "point_2550",
-    "name": "منحوتات السلطان الأطرش ومال جنبلاط",
+    "name": "מנחותאת אלסלטאנ אלאטרש ומאל ג׳נבלאט",
     "category": "historical",
     "coordinates": {
       "latitude": 32.9768495,
@@ -25563,7 +25561,7 @@
   },
   {
     "id": "point_2557",
-    "name": "مسجد بدر",
+    "name": "מסג׳ד בדר",
     "category": "religious",
     "coordinates": {
       "latitude": 31.8280414,
@@ -26313,7 +26311,7 @@
   },
   {
     "id": "point_2632",
-    "name": "منزل ومكان ولادة مريم العذراء",
+    "name": "מנזל ומכאנ ולאדה מרימ אלעד׳ראء",
     "category": "religious",
     "coordinates": {
       "latitude": 31.7808454,
@@ -27153,7 +27151,7 @@
   },
   {
     "id": "point_2716",
-    "name": "كنيسة الروم الكاثوليك - إعبلين",
+    "name": "כניסה אלרומ אלכאת׳וליכ - אעבלינ",
     "category": "religious",
     "coordinates": {
       "latitude": 32.8214997,
@@ -27163,7 +27161,7 @@
   },
   {
     "id": "point_2717",
-    "name": "كنيسة الروم الارثوذكس -عبلين",
+    "name": "כניסה אלרומ אלארת׳וד׳כס -עבלינ",
     "category": "religious",
     "coordinates": {
       "latitude": 32.822124,
@@ -27253,7 +27251,7 @@
   },
   {
     "id": "point_2726",
-    "name": "تمثال لمريم العذراء",
+    "name": "תמת׳אל למרימ אלעד׳ראء",
     "category": "tourism",
     "coordinates": {
       "latitude": 32.7023675,
@@ -27683,7 +27681,7 @@
   },
   {
     "id": "point_2769",
-    "name": "جبل الهاوية",
+    "name": "ג׳בל אלהאויה",
     "category": "tourism",
     "coordinates": {
       "latitude": 32.6824597,
@@ -27693,7 +27691,7 @@
   },
   {
     "id": "point_2770",
-    "name": "بيت الشعب - نساء",
+    "name": "בית אלשעב - נסאء",
     "category": "religious",
     "coordinates": {
       "latitude": 32.6961321,
@@ -27703,7 +27701,7 @@
   },
   {
     "id": "point_2771",
-    "name": "بيت الشعب - رجال",
+    "name": "בית אלשעב - רג׳אל",
     "category": "religious",
     "coordinates": {
       "latitude": 32.695306,
@@ -27713,7 +27711,7 @@
   },
   {
     "id": "point_2772",
-    "name": "بيت البلد - نصر الدين",
+    "name": "בית אלבלד - נצר אלדינ",
     "category": "religious",
     "coordinates": {
       "latitude": 32.6985907,
@@ -28113,7 +28111,7 @@
   },
   {
     "id": "point_2812",
-    "name": "عين ام الشقف",
+    "name": "עינ אמ אלשקפ",
     "category": "nature",
     "coordinates": {
       "latitude": 32.69577,
@@ -28123,7 +28121,7 @@
   },
   {
     "id": "point_2813",
-    "name": "مقام أبو عبد الله",
+    "name": "מקאמ אבו עבד אללה",
     "category": "religious",
     "coordinates": {
       "latitude": 32.718961,
@@ -28553,7 +28551,7 @@
   },
   {
     "id": "point_2856",
-    "name": "مركز البلد للطفولة المبكرة",
+    "name": "מרכז אלבלד ללטפולה אלמבכרה",
     "category": "amenity",
     "coordinates": {
       "latitude": 32.6931251,
@@ -28763,7 +28761,7 @@
   },
   {
     "id": "point_2877",
-    "name": "قرية الناصرة",
+    "name": "קריה אלנאצרה",
     "category": "tourism",
     "coordinates": {
       "latitude": 32.7000733,
@@ -29643,7 +29641,7 @@
   },
   {
     "id": "point_2965",
-    "name": "مسجد حلف",
+    "name": "מסג׳ד חלפ",
     "category": "religious",
     "coordinates": {
       "latitude": 32.7476852,
@@ -29733,7 +29731,7 @@
   },
   {
     "id": "point_2974",
-    "name": "مسجد صوفي",
+    "name": "מסג׳ד צופי",
     "category": "religious",
     "coordinates": {
       "latitude": 32.8596393,
@@ -29853,7 +29851,7 @@
   },
   {
     "id": "point_2986",
-    "name": "مسجد النور",
+    "name": "מסג׳ד אלנור",
     "category": "religious",
     "coordinates": {
       "latitude": 32.863433,
@@ -29873,7 +29871,7 @@
   },
   {
     "id": "point_2988",
-    "name": "مسجد",
+    "name": "מסג׳ד",
     "category": "religious",
     "coordinates": {
       "latitude": 32.8266648,
@@ -29883,7 +29881,7 @@
   },
   {
     "id": "point_2989",
-    "name": "مسجد السلام",
+    "name": "מסג׳ד אלסלאמ",
     "category": "religious",
     "coordinates": {
       "latitude": 32.8258927,
@@ -29893,7 +29891,7 @@
   },
   {
     "id": "point_2990",
-    "name": "مقبرة إسلامية طمرة",
+    "name": "מקברה אסלאמיה טמרה",
     "category": "religious",
     "coordinates": {
       "latitude": 32.8589982,
@@ -29913,7 +29911,7 @@
   },
   {
     "id": "point_2992",
-    "name": "مسجد الجازية",
+    "name": "מסג׳ד אלג׳אזיה",
     "category": "religious",
     "coordinates": {
       "latitude": 32.4135853,
@@ -29943,7 +29941,7 @@
   },
   {
     "id": "point_2995",
-    "name": "قبر الشيخ غنايم",
+    "name": "קבר אלשיח׳ ע׳נאימ",
     "category": "historical",
     "coordinates": {
       "latitude": 32.5977419,
@@ -29953,7 +29951,7 @@
   },
   {
     "id": "point_2996",
-    "name": "مسجد الفردوس",
+    "name": "מסג׳ד אלפרדוס",
     "category": "religious",
     "coordinates": {
       "latitude": 32.5977785,
@@ -29963,7 +29961,7 @@
   },
   {
     "id": "point_2997",
-    "name": "مسجد التقوى",
+    "name": "מסג׳ד אלתקוא",
     "category": "religious",
     "coordinates": {
       "latitude": 32.602688,
@@ -29983,7 +29981,7 @@
   },
   {
     "id": "point_2999",
-    "name": "مسجد الخوالد",
+    "name": "מסג׳ד אלח׳ואלד",
     "category": "religious",
     "coordinates": {
       "latitude": 32.7689215,
@@ -30323,7 +30321,7 @@
   },
   {
     "id": "point_3033",
-    "name": "مسجد الراشدين",
+    "name": "מסג׳ד אלראשדינ",
     "category": "religious",
     "coordinates": {
       "latitude": 31.3994167,
@@ -30643,7 +30641,7 @@
   },
   {
     "id": "point_3065",
-    "name": "دار عبد الله عرموش",
+    "name": "דאר עבד אללה ערמוש",
     "category": "tourism",
     "coordinates": {
       "latitude": 31.8780553,
@@ -31383,7 +31381,7 @@
   },
   {
     "id": "point_3139",
-    "name": "مسجد الهصطفى",
+    "name": "מסג׳ד אלהצטפא",
     "category": "religious",
     "coordinates": {
       "latitude": 31.7808656,
@@ -31393,7 +31391,7 @@
   },
   {
     "id": "point_3140",
-    "name": "المصلى المرواني",
+    "name": "אלמצלא אלמרואני",
     "category": "religious",
     "coordinates": {
       "latitude": 31.7766035,
@@ -31433,7 +31431,7 @@
   },
   {
     "id": "point_3144",
-    "name": "المعجزة الأولى - التذكار والمقهى",
+    "name": "אלמעג׳זה אלאולא - אלתד׳כאר ואלמקהא",
     "category": "religious",
     "coordinates": {
       "latitude": 32.7484175,
@@ -31453,7 +31451,7 @@
   },
   {
     "id": "point_3146",
-    "name": "مسجد الإستقلال",
+    "name": "מסג׳ד אלאסתקלאל",
     "category": "religious",
     "coordinates": {
       "latitude": 32.8126721,
@@ -31523,7 +31521,7 @@
   },
   {
     "id": "point_3153",
-    "name": "الشيج مكي",
+    "name": "אלשיג׳ מכי",
     "category": "religious",
     "coordinates": {
       "latitude": 31.78213,
@@ -33303,7 +33301,7 @@
   },
   {
     "id": "point_3331",
-    "name": "مسجد البراق",
+    "name": "מסג׳ד אלבראק",
     "category": "religious",
     "coordinates": {
       "latitude": 31.7773011,
@@ -33483,7 +33481,7 @@
   },
   {
     "id": "point_3349",
-    "name": "جبل قحاوش",
+    "name": "ג׳בל קחאוש",
     "category": "nature",
     "coordinates": {
       "latitude": 32.5343555,
@@ -35543,7 +35541,7 @@
   },
   {
     "id": "point_3555",
-    "name": "الأربعين",
+    "name": "אלארבעינ",
     "category": "religious",
     "coordinates": {
       "latitude": 33.2696349,
@@ -36793,7 +36791,7 @@
   },
   {
     "id": "point_3680",
-    "name": "مسجد النور",
+    "name": "מסג׳ד אלנור",
     "category": "religious",
     "coordinates": {
       "latitude": 31.7644785,
@@ -36893,7 +36891,7 @@
   },
   {
     "id": "point_3690",
-    "name": "دير آبان",
+    "name": "דיר אבאנ",
     "category": "historical",
     "coordinates": {
       "latitude": 31.7435377,
@@ -36913,7 +36911,7 @@
   },
   {
     "id": "point_3692",
-    "name": "لفتا‎",
+    "name": "לפתא‎",
     "category": "historical",
     "coordinates": {
       "latitude": 31.7964636,
@@ -36923,7 +36921,7 @@
   },
   {
     "id": "point_3693",
-    "name": "صطاف",
+    "name": "צטאפ",
     "category": "historical",
     "coordinates": {
       "latitude": 31.7692474,
@@ -37003,7 +37001,7 @@
   },
   {
     "id": "point_3701",
-    "name": "مقام الشيخ عبد الرحمن الدجاني",
+    "name": "מקאמ אלשיח׳ עבד אלרחמנ אלדג׳אני",
     "category": "religious",
     "coordinates": {
       "latitude": 32.6092039,
@@ -37093,7 +37091,7 @@
   },
   {
     "id": "point_3710",
-    "name": "مقام النبي كفل",
+    "name": "מקאמ אלנבי כפל",
     "category": "historical",
     "coordinates": {
       "latitude": 32.0071384,
@@ -37183,7 +37181,7 @@
   },
   {
     "id": "point_3719",
-    "name": "مدرسة قرية ابو كشك",
+    "name": "מדרסה קריה אבו כשכ",
     "category": "historical",
     "coordinates": {
       "latitude": 32.1324336,
@@ -37203,7 +37201,7 @@
   },
   {
     "id": "point_3721",
-    "name": "مسجد العباسية",
+    "name": "מסג׳ד אלעבאסיה",
     "category": "religious",
     "coordinates": {
       "latitude": 32.0307892,
@@ -37293,7 +37291,7 @@
   },
   {
     "id": "point_3730",
-    "name": "النبي شمعون / נבי שמעון",
+    "name": "אלנבי שמעונ / נבי שמעון",
     "category": "religious",
     "coordinates": {
       "latitude": 32.2021757,
@@ -37323,7 +37321,7 @@
   },
   {
     "id": "point_3733",
-    "name": "مُصلى السيّاح",
+    "name": "מُצלא אלסיّאח",
     "category": "religious",
     "coordinates": {
       "latitude": 32.8025715,
@@ -37333,7 +37331,7 @@
   },
   {
     "id": "point_3734",
-    "name": "مسجد عثمان بن عثمان",
+    "name": "מסג׳ד עת׳מאנ בנ עת׳מאנ",
     "category": "religious",
     "coordinates": {
       "latitude": 32.130895,
@@ -37343,7 +37341,7 @@
   },
   {
     "id": "point_3735",
-    "name": "مغارة الدرج",
+    "name": "מע׳ארה אלדרג׳",
     "category": "nature",
     "coordinates": {
       "latitude": 32.1303657,
@@ -37353,7 +37351,7 @@
   },
   {
     "id": "point_3736",
-    "name": "مغارة الضبعة",
+    "name": "מע׳ארה אלד׳בעה",
     "category": "nature",
     "coordinates": {
       "latitude": 32.1334167,
@@ -37473,7 +37471,7 @@
   },
   {
     "id": "point_3748",
-    "name": "مقبرة بلد الشيخ (القسام)",
+    "name": "מקברה בלד אלשיח׳ (אלקסאמ)",
     "category": "religious",
     "coordinates": {
       "latitude": 32.7674693,
@@ -39743,7 +39741,7 @@
   },
   {
     "id": "point_3975",
-    "name": "مسجد أسيد بن حضير (الدعوة)",
+    "name": "מסג׳ד אסיד בנ חד׳יר (אלדעוה)",
     "category": "religious",
     "coordinates": {
       "latitude": 31.8317244,
@@ -40693,7 +40691,7 @@
   },
   {
     "id": "point_4070",
-    "name": "اسطبلات سليمان",
+    "name": "אסטבלאת סלימאנ",
     "category": "historical",
     "coordinates": {
       "latitude": 31.7763098,
@@ -42463,7 +42461,7 @@
   },
   {
     "id": "point_4247",
-    "name": "قرية حتا",
+    "name": "קריה חתא",
     "category": "historical",
     "coordinates": {
       "latitude": 31.6520183,
@@ -42613,7 +42611,7 @@
   },
   {
     "id": "point_4262",
-    "name": "بستان النجوم",
+    "name": "בסתאנ אלנג׳ומ",
     "category": "amenity",
     "coordinates": {
       "latitude": 32.4765547,
@@ -42623,7 +42621,7 @@
   },
   {
     "id": "point_4263",
-    "name": "روضة الحياة",
+    "name": "רוד׳ה אלחיאה",
     "category": "amenity",
     "coordinates": {
       "latitude": 32.4766669,
@@ -42643,7 +42641,7 @@
   },
   {
     "id": "point_4265",
-    "name": "روضة الواحة",
+    "name": "רוד׳ה אלואחה",
     "category": "amenity",
     "coordinates": {
       "latitude": 32.4778068,
@@ -42653,7 +42651,7 @@
   },
   {
     "id": "point_4266",
-    "name": "بستان الالحان",
+    "name": "בסתאנ אלאלחאנ",
     "category": "amenity",
     "coordinates": {
       "latitude": 32.4777738,
@@ -42663,7 +42661,7 @@
   },
   {
     "id": "point_4267",
-    "name": "مدرسة برطعة الابتدائية الرسمية",
+    "name": "מדרסה ברטעה אלאבתדאייה אלרסמיה",
     "category": "religious",
     "coordinates": {
       "latitude": 32.4755362,
@@ -47973,7 +47971,7 @@
   },
   {
     "id": "point_4798",
-    "name": "كنيسة القيامة",
+    "name": "כניסה אלקיאמה",
     "category": "religious",
     "coordinates": {
       "latitude": 31.7785478,
@@ -49813,7 +49811,7 @@
   },
   {
     "id": "point_4982",
-    "name": "عقدة الشيخ لبيب ابو ركن",
+    "name": "עקדה אלשיח׳ לביב אבו רכנ",
     "category": "historical",
     "coordinates": {
       "latitude": 32.7187263,
@@ -55833,7 +55831,7 @@
   },
   {
     "id": "point_5584",
-    "name": "بانياس",
+    "name": "באניאס",
     "category": "tourism",
     "coordinates": {
       "latitude": 33.2474751,
@@ -56653,7 +56651,7 @@
   },
   {
     "id": "point_5666",
-    "name": "البلدة القديمة",
+    "name": "אלבלדה אלקדימה",
     "category": "tourism",
     "coordinates": {
       "latitude": 32.6937165,

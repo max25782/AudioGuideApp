@@ -1,7 +1,7 @@
 import { PointOfInterest, PointCategory } from '../types';
 
-// Импортируем новые данные с описаниями
-import namesCategories from '../data/processed/names-categories-with-descriptions.json';
+// Импортируем данные с аудио путями
+import pointsWithAudio from '../data/processed/points-with-audio.json';
 // Импорт удален - используем только основной файл с данными
 import namesStats from '../data/processed/names-stats.json';
 
@@ -46,9 +46,8 @@ class PreprocessedDataService {
     try {
       console.log('[PreprocessedDataService] Загружаю новые данные (5,681 точек)...');
       
-      // Конвертируем все точки
-      const rawPoints = namesCategories as NewPointData[];
-      this.allPoints = rawPoints.map(convertNewPointToTyped);
+      // Используем данные с аудио путями (уже в правильном формате)
+      this.allPoints = pointsWithAudio as PointOfInterest[];
       
       console.log(`[PreprocessedDataService] Загружено ${this.allPoints.length} точек`);
       
