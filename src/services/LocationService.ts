@@ -5,6 +5,7 @@ import preprocessedDataService from './PreprocessedDataService';
 class LocationService {
   private currentLocation: LocationType | null = null;
   private isTracking: boolean = false;
+  private locationSubscription: Location.LocationSubscription | null = null;
 
   async getCurrentLocation(): Promise<LocationType | null> {
     try {
@@ -50,6 +51,11 @@ class LocationService {
 
   async startLocationTracking(callback: (location: LocationType) => void): Promise<void> {
     try {
+      // Останавливаем предыдущее отслеживание, если оно активно
+      if (this.isTracking && this.locationSubscription) {
+        await this.stopLocationTracking();
+      }
+
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         throw new Error('Нет разрешения на отслеживание местоположения');
@@ -57,7 +63,7 @@ class LocationService {
 
       this.isTracking = true;
       
-      await Location.watchPositionAsync(
+      this.locationSubscription = await Location.watchPositionAsync(
         {
           accuracy: Location.Accuracy.High,
           timeInterval: 5000,
@@ -77,12 +83,23 @@ class LocationService {
     } catch (error) {
       console.error('Ошибка запуска отслеживания местоположения:', error);
       this.isTracking = false;
+      this.locationSubscription = null;
       throw error;
     }
   }
 
-  stopLocationTracking(): void {
-    this.isTracking = false;
+  async stopLocationTracking(): Promise<void> {
+    try {
+      if (this.locationSubscription) {
+        await this.locationSubscription.remove();
+        this.locationSubscription = null;
+      }
+      this.isTracking = false;
+    } catch (error) {
+      console.error('Ошибка остановки отслеживания местоположения:', error);
+      this.isTracking = false;
+      this.locationSubscription = null;
+    }
   }
 
   getLastKnownLocation(): LocationType | null {

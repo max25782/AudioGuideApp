@@ -49,7 +49,13 @@ export default function PointDetailScreen() {
         console.log('userLocation is null');
         return;
       }
-      const apiKey = 'AIzaSyDF3H6Q_xtm5f3xAeIC4V2UZ9En6wqRllM';
+      // Use environment variable or secure storage for API key
+      const apiKey = process.env.GOOGLE_MAPS_API_KEY || __DEV__ ? 'DEMO_KEY' : '';
+      if (!apiKey || apiKey === 'DEMO_KEY') {
+        console.warn('Google Maps API key not configured');
+        Alert.alert('Конфигурация', 'API ключ Google Maps не настроен');
+        return;
+      }
       const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${userLocation.latitude},${userLocation.longitude}&destination=${point.latitude},${point.longitude}&key=${apiKey}`;
       const response = await fetch(url);
       const data = await response.json();

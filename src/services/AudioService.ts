@@ -26,6 +26,7 @@ class AudioService {
   private sound: Audio.Sound | null = null;
   private isPlaying = false;
   private currentAudioPath: string | null = null;
+  private statusUpdateSubscription: any = null;
 
   async loadAudio(audioFilePath: string): Promise<boolean> {
     try {
@@ -47,14 +48,16 @@ class AudioService {
       this.sound = sound;
       this.currentAudioPath = audioFilePath;
 
-      // Настраиваем обработчики событий
-      this.sound.setOnPlaybackStatusUpdate((status) => {
+      // Настраиваем обработчики событий с правильной очисткой
+      this.statusUpdateSubscription = this.sound.setOnPlaybackStatusUpdate((status) => {
         if (status.isLoaded) {
           this.isPlaying = status.isPlaying;
           
           // Если воспроизведение завершено
           if (status.didJustFinish) {
             this.isPlaying = false;
+            // Автоматически очищаем ресурсы после завершения воспроизведения
+            this.cleanupAudio();
           }
         }
       });
@@ -97,13 +100,30 @@ class AudioService {
     try {
       if (this.sound) {
         await this.sound.stopAsync();
+        await this.cleanupAudio();
+      }
+    } catch (error) {
+      console.error('Ошибка остановки аудио:', error);
+    }
+  }
+
+  private async cleanupAudio(): Promise<void> {
+    try {
+      if (this.sound) {
+        // Удаляем обработчик событий
+        if (this.statusUpdateSubscription) {
+          this.sound.setOnPlaybackStatusUpdate(null);
+          this.statusUpdateSubscription = null;
+        }
+        
+        // Освобождаем ресурсы
         await this.sound.unloadAsync();
         this.sound = null;
         this.isPlaying = false;
         this.currentAudioPath = null;
       }
     } catch (error) {
-      console.error('Ошибка остановки аудио:', error);
+      console.error('Ошибка очистки аудио ресурсов:', error);
     }
   }
 
