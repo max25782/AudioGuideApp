@@ -28,6 +28,7 @@ export default function PointDetailScreen() {
 
   const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(null);
   const [routeCoords, setRouteCoords] = useState<{ latitude: number; longitude: number }[]>([]);
+  const [isAudioPlaying, setIsAudioPlaying] = useState(false);
 
   // Получаем текущее местоположение пользователя
   useEffect(() => {
@@ -40,6 +41,15 @@ export default function PointDetailScreen() {
         longitude: location.coords.longitude,
       });
     })();
+  }, []);
+
+  // Проверяем статус аудио каждую секунду
+  useEffect(() => {
+    const audioStatusInterval = setInterval(() => {
+      setIsAudioPlaying(audioService.isAudioPlaying());
+    }, 1000);
+
+    return () => clearInterval(audioStatusInterval);
   }, []);
 
   // Получаем маршрут через Directions API
@@ -73,13 +83,44 @@ export default function PointDetailScreen() {
 
   const handlePlayAudio = async () => {
     try {
-      const success = await audioService.playPointAudio(point.audioFilePath);
-      if (!success) {
-        Alert.alert('Ошибка', 'Не удалось воспроизвести аудиогид');
+      if (isAudioPlaying) {
+        // Если аудио уже играет, останавливаем его
+        await audioService.stopAudio();
+        setIsAudioPlaying(false);
+      } else {
+        // Если аудио не играет, запускаем его
+        const success = await audioService.playPointAudio(point.audioFilePath);
+        if (!success) {
+          Alert.alert('Ошибка', 'Не удалось воспроизвести аудиогид');
+        } else {
+          setIsAudioPlaying(true);
+        }
       }
     } catch (error) {
       console.error('Ошибка воспроизведения аудио:', error);
       Alert.alert('Ошибка', 'Проблема с аудиофайлом');
+    }
+  };
+
+  const handlePauseAudio = async () => {
+    try {
+      if (isAudioPlaying) {
+        await audioService.pauseAudio();
+        setIsAudioPlaying(false);
+      }
+    } catch (error) {
+      console.error('Ошибка паузы аудио:', error);
+      Alert.alert('Ошибка', 'Не удалось поставить на паузу');
+    }
+  };
+
+  const handleStopAudio = async () => {
+    try {
+      await audioService.stopAudio();
+      setIsAudioPlaying(false);
+    } catch (error) {
+      console.error('Ошибка остановки аудио:', error);
+      Alert.alert('Ошибка', 'Не удалось остановить аудио');
     }
   };
 
@@ -163,12 +204,35 @@ export default function PointDetailScreen() {
 
         {/* Кнопки действий */}
         <View style={styles.buttonsContainer}>
-          <TouchableOpacity
-            style={[styles.actionButton, styles.audioButton]}
-            onPress={handlePlayAudio}
-          >
-            <Text style={styles.buttonText}>🎵 Слушать аудиогид</Text>
-          </TouchableOpacity>
+          {/* Аудио контролы */}
+          <View style={styles.audioControlsContainer}>
+            <TouchableOpacity
+              style={[styles.actionButton, styles.audioButton, isAudioPlaying && styles.audioButtonPlaying]}
+              onPress={handlePlayAudio}
+            >
+              <Text style={styles.buttonText}>
+                {isAudioPlaying ? '⏹️ Остановить' : '🎵 Слушать аудиогид'}
+              </Text>
+            </TouchableOpacity>
+
+            {isAudioPlaying && (
+              <View style={styles.audioSecondaryControls}>
+                <TouchableOpacity
+                  style={[styles.actionButton, styles.pauseButton]}
+                  onPress={handlePauseAudio}
+                >
+                  <Text style={styles.buttonText}>⏸️ Пауза</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={[styles.actionButton, styles.stopButton]}
+                  onPress={handleStopAudio}
+                >
+                  <Text style={styles.buttonText}>⏹️ Стоп</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          </View>
 
           <TouchableOpacity
             style={[styles.actionButton, styles.navigateButton]}
@@ -247,6 +311,25 @@ const styles = StyleSheet.create({
   },
   audioButton: {
     backgroundColor: '#4CAF50',
+  },
+  audioButtonPlaying: {
+    backgroundColor: '#f44336',
+  },
+  audioControlsContainer: {
+    marginBottom: 15,
+  },
+  audioSecondaryControls: {
+    flexDirection: 'row',
+    gap: 10,
+    marginTop: 10,
+  },
+  pauseButton: {
+    backgroundColor: '#FF9800',
+    flex: 1,
+  },
+  stopButton: {
+    backgroundColor: '#f44336',
+    flex: 1,
   },
   navigateButton: {
     backgroundColor: '#2196F3',

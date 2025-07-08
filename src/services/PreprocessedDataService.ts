@@ -1,7 +1,7 @@
 import { PointOfInterest, PointCategory } from '../types';
 
-// Импортируем данные с аудио путями
-import pointsWithAudio from '../data/processed/points-with-audio.json';
+// Импортируем полные данные с описаниями (5,684 точки)
+import namesCategoriesWithDescriptions from '../data/processed/names-categories-with-descriptions.json';
 // Импорт удален - используем только основной файл с данными
 import namesStats from '../data/processed/names-stats.json';
 
@@ -27,15 +27,15 @@ function convertNewPointToTyped(raw: NewPointData): PointOfInterest {
     // Совместимость со старым API
     title: raw.name,
     description: raw.description,
-    audioFilePath: `${raw.category}.mp3`,
+    audioFilePath: `${raw.id}.mp3`,
     latitude: raw.coordinates.latitude,
     longitude: raw.coordinates.longitude
   };
 }
 
 /**
- * Сервис для работы с новыми данными names-categories.json
- * Использует 5,681 точку из export.json
+ * Сервис для работы с новыми данными names-categories-with-descriptions.json
+ * Использует 5,684 точки из полного датасета
  */
 class PreprocessedDataService {
   private allPoints: PointOfInterest[];
@@ -44,10 +44,11 @@ class PreprocessedDataService {
 
   constructor() {
     try {
-      console.log('[PreprocessedDataService] Загружаю новые данные (5,681 точек)...');
+      console.log('[PreprocessedDataService] Загружаю полные данные (5,684 точек)...');
       
-      // Используем данные с аудио путями (уже в правильном формате)
-      this.allPoints = pointsWithAudio as PointOfInterest[];
+      // Используем полные данные с описаниями
+      const rawData = namesCategoriesWithDescriptions as NewPointData[];
+      this.allPoints = rawData.map(convertNewPointToTyped);
       
       console.log(`[PreprocessedDataService] Загружено ${this.allPoints.length} точек`);
       
@@ -147,9 +148,9 @@ class PreprocessedDataService {
    */
   getStatistics() {
     return {
-      totalPoints: this.statistics.totalExtracted,
-      categories: this.statistics.categoryBreakdown,
-      dataSource: 'names-categories.json (export.json)',
+      totalPoints: this.statistics.totalPoints,
+      categories: this.statistics.categories,
+      dataSource: 'names-categories-with-descriptions.json',
       extractedAt: this.statistics.extractedAt
     };
   }
@@ -161,7 +162,7 @@ class PreprocessedDataService {
     return {
       total: 1,
       regions: ['Israel'],
-      coverage: 'Весь Израиль (5,681 точек)'
+      coverage: 'Весь Израиль (5,684 точек)'
     };
   }
 

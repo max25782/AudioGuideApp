@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AudioGuideApp - TTS Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .container { background: #f5f5f5; padding: 20px; border-radius: 10px; }
+        textarea { width: 100%; height: 150px; margin: 10px 0; padding: 10px; }
+        button { background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .example { background: #e9ecef; padding: 10px; border-radius: 5px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎤 AudioGuideApp - TTS Test</h1>
+        
+        <h3>Примеры текстов для TTS:</h3>
+        
+        <div class="example">
+            <strong>Point 1 - שער האשפות:</strong><br>
+            <textarea id="text1">Добро пожаловать в שער האשפות! Это туристическое место в Израиле. Здесь вы можете узнать больше об истории этого места. Спасибо за внимание!</textarea>
+            <button onclick="speakText('text1')">🔊 Слушать</button>
+        </div>
+        
+        <div class="example">
+            <strong>Point 2 - סינמה סיטי גלילות:</strong><br>
+            <textarea id="text2">Добро пожаловать в סינמה סיטי גלילות! Это развлекательный центр в Израиле. Здесь вы можете посмотреть фильмы и отдохнуть. Спасибо за внимание!</textarea>
+            <button onclick="speakText('text2')">🔊 Слушать</button>
+        </div>
+        
+        <div class="example">
+            <strong>Свой текст:</strong><br>
+            <textarea id="customText" placeholder="Введите свой текст здесь..."></textarea>
+            <button onclick="speakText('customText')">🔊 Слушать</button>
+        </div>
+        
+        <h3>📋 Инструкции:</h3>
+        <ol>
+            <li>Нажмите "Слушать" для проверки текста</li>
+            <li>Скопируйте текст в TTS сервис (ElevenLabs, Google Translate)</li>
+            <li>Скачайте MP3 файл</li>
+            <li>Переименуйте в point_1.mp3, point_2.mp3, и т.д.</li>
+            <li>Поместите в папку assets/audio/</li>
+        </ol>
+        
+        <h3>🌐 Полезные ссылки:</h3>
+        <ul>
+            <li><a href="https://elevenlabs.io/" target="_blank">ElevenLabs (лучшее качество)</a></li>
+            <li><a href="https://translate.google.com/" target="_blank">Google Translate (бесплатно)</a></li>
+            <li><a href="https://online-voice-recorder.com/" target="_blank">Online Voice Recorder</a></li>
+        </ul>
+    </div>
+
+    <script>
+        function speakText(textId) {
+            const text = document.getElementById(textId).value;
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'ru-RU';
+                utterance.rate = 0.8;
+                speechSynthesis.speak(utterance);
+            } else {
+                alert('Ваш браузер не поддерживает синтез речи');
+            }
+        }
+    </script>
+</body>
+</html>

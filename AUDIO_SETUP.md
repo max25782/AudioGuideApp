@@ -7,7 +7,7 @@
 ## Структура данных
 
 ### Точки интереса
-- **Файл**: `src/data/processed/points-with-audio.json`
+- **Файл**: `src/data/processed/names-categories-with-descriptions.json`
 - **Формат**: JSON с полями `id`, `name`, `category`, `coordinates`, `description`, `audioFilePath`
 - **Пример**:
 ```json

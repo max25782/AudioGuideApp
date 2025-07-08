@@ -1,25 +1,20 @@
 import { Audio } from 'expo-av';
 import { Asset } from 'expo-asset';
 
-// Статический маппинг аудиофайлов
-// Примечание: аудиофайлы должны быть добавлены в папку assets/audio/
+// Динамический маппинг аудиофайлов - только для существующих файлов
 const audioFiles: { [key: string]: any } = {
-  // Примеры для первых точек интереса
+  // Добавляйте файлы только после их создания в assets/audio/
   'point_1.mp3': require('../../assets/audio/point_1.mp3'),
   'point_2.mp3': require('../../assets/audio/point_2.mp3'),
   'point_3.mp3': require('../../assets/audio/point_3.mp3'),
   'point_4.mp3': require('../../assets/audio/point_4.mp3'),
   'point_5.mp3': require('../../assets/audio/point_5.mp3'),
   'point_6.mp3': require('../../assets/audio/point_6.mp3'),
-  'point_7.mp3': require('../../assets/audio/point_7.mp3'),
-  'point_8.mp3': require('../../assets/audio/point_8.mp3'),
-  'point_9.mp3': require('../../assets/audio/point_9.mp3'),
-  'point_10.mp3': require('../../assets/audio/point_10.mp3'),
-  
-  // Добавьте остальные файлы по мере их создания
-  // 'point_11.mp3': require('../../assets/audio/point_11.mp3'),
-  // 'point_12.mp3': require('../../assets/audio/point_12.mp3'),
-  // и так далее...
+  // 'point_7.mp3': require('../../assets/audio/point_7.mp3'),
+  // 'point_8.mp3': require('../../assets/audio/point_8.mp3'),
+  // 'point_9.mp3': require('../../assets/audio/point_9.mp3'),
+  // 'point_10.mp3': require('../../assets/audio/point_10.mp3'),
+
 };
 
 class AudioService {

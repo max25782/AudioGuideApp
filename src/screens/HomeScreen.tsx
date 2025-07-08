@@ -57,7 +57,7 @@ export function HomeScreen() {
       setIsLoading(true);
       console.log('🚀 Инициализация данных...');
       
-      // Загружаем все точки из нового сервиса
+      // Загружаем все точки из сервиса
       const loadedPoints = preprocessedDataService.getAllPoints();
       console.log(`✅ Загружено ${loadedPoints.length} точек`);
       

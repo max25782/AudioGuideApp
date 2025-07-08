@@ -1,17 +1,21 @@
 {
-  "totalExtracted": 5681,
-  "totalProcessed": 5681,
-  "categoryBreakdown": {
+  "totalPoints": 5684,
+  "categories": {
     "tourism": 723,
     "culture": 95,
     "religious": 563,
     "historical": 1757,
-    "nature": 1710,
+    "nature": 1713,
     "architecture": 117,
     "amenity": 583,
     "leisure": 79,
     "children": 54
   },
-  "extractedAt": "2025-06-28T18:11:06.717Z",
-  "sourceFile": "export.json"
+  "languages": {
+    "he": 3,
+    "en": 3,
+    "ru": 0
+  },
+  "dataSource": "merged-points-with-pbf.json",
+  "extractedAt": "2025-07-05T15:37:34.425Z"
 }
