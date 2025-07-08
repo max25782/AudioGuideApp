@@ -20,7 +20,7 @@
         "UIBackgroundModes": ["location", "audio"]
       },
       "config": {
-        "googleMapsApiKey": "AIzaSyDF3H6Q_xtm5f3xAeIC4V2UZ9En6wqRllM"
+        "googleMapsApiKey": "GOOGLE_MAPS_API_KEY"
       }
     },
     "android": {
