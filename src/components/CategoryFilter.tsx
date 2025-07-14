@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { PointCategory } from '../types';
+import i18nService from '../services/I18nService';
 
 export interface CategoryFilterProps {
   categories: PointCategory[];
@@ -21,7 +22,7 @@ export default function CategoryFilter({
 
   const renderCategory = (categoryId: PointCategory | 'all') => {
     const isSelected = selectedCategory === categoryId;
-    const categoryName = categoryId === 'all' ? 'Все' : getCategoryName(categoryId);
+    const categoryName = categoryId === 'all' ? i18nService.t('all') : getCategoryName(categoryId);
     const categoryColor = categoryId === 'all' ? '#007AFF' : getCategoryColor(categoryId);
 
     return (
@@ -39,6 +40,7 @@ export default function CategoryFilter({
             styles.categoryText,
             isSelected && { color: '#fff' },
             !isSelected && { color: categoryColor },
+            i18nService.isRTL() && styles.rtlText,
           ]}
         >
           {categoryName}
@@ -49,7 +51,9 @@ export default function CategoryFilter({
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Категории</Text>
+      <Text style={[styles.title, i18nService.isRTL() && styles.rtlText]}>
+        {i18nService.t('categories')}
+      </Text>
       <ScrollView 
         horizontal 
         showsHorizontalScrollIndicator={false}
@@ -87,5 +91,8 @@ const styles = StyleSheet.create({
   categoryText: {
     fontSize: 14,
     fontWeight: '600',
+  },
+  rtlText: {
+    textAlign: 'right',
   },
 }); 

@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import MapView, { Marker, Region } from 'react-native-maps';
 import { PointOfInterest, Location, PointCategory } from '../types';
+import i18nService from '../services/I18nService';
 
 export interface MapViewProps {
   currentLocation: Location;
@@ -38,9 +39,10 @@ export default function MapViewComponent({
               latitude: point.latitude,
               longitude: point.longitude,
             }}
-            title={point.name}
-            description={point.description}
-            pinColor={getCategoryColor(point.category)}
+            title={`${point.isVisited ? '✓ ' : ''}${i18nService.getPointName(point.name)}`}
+            description={`${i18nService.getPointDescription(point.description).substring(0, 100)}${point.isVisited ? '\n🎯 Посещено' : ''}`}
+            pinColor={point.isVisited ? '#4CAF50' : getCategoryColor(point.category)}
+            opacity={point.isVisited ? 0.8 : 1.0}
             onPress={() => onPointPress(point)}
           />
         ))}

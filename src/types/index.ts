@@ -1,19 +1,25 @@
+import { MultilingualDescription, MultilingualName } from '../services/I18nService';
+
 export type PointCategory = 'historical' | 'religious' | 'children' | 'nature' | 'culture' | 'tourism' | 'architecture' | 'amenity' | 'leisure';
 
 export interface PointOfInterest {
   id: string;
-  name: string;
+  name: string | MultilingualName;
   category: PointCategory;
   coordinates: {
     latitude: number;
     longitude: number;
   };
+  // Support both string and multilingual descriptions
+  description: string | MultilingualDescription;
   // Обязательные поля для совместимости
-  title: string;
-  description: string;
-  audioFilePath: string;
+  title?: string;
+  audioFilePath?: string;
   latitude: number;
   longitude: number;
+  // Статус посещения для текущего пользователя
+  isVisited?: boolean;
+  visitedAt?: Date;
 }
 
 export interface Location {
@@ -29,7 +35,38 @@ export interface Category {
   color: string;
 }
 
+// Интерфейс для отслеживания посещений
+export interface VisitedPoint {
+  pointId: string;
+  visitedAt: Date;
+  coordinates: {
+    latitude: number;
+    longitude: number;
+  };
+  // Дополнительные данные о посещении
+  duration?: number; // время пребывания в секундах
+  audioPlayed?: boolean; // был ли воспроизведен аудиогид
+}
+
+// Интерфейс пользователя
+export interface User {
+  id: string;
+  createdAt: Date;
+  visitedPoints: VisitedPoint[];
+  totalVisits: number;
+  favoriteCategory?: PointCategory;
+}
+
+// Настройки приложения для пользователя
+export interface UserSettings {
+  language: string;
+  autoPlayAudio: boolean;
+  notificationsEnabled: boolean;
+  trackingRadius: number; // радиус в метрах для автоматического отслеживания
+}
+
 export type RootStackParamList = {
   Home: undefined;
   PointDetail: { point: PointOfInterest };
+  VisitedPoints: undefined;
 }; 

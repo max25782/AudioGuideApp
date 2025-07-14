@@ -135,7 +135,7 @@ async function uploadAllAudioFiles() {
 function generateUpdatedPointsData(uploadResults) {
   console.log('\n🔄 Generating updated points data...');
   
-  const pointsDataPath = path.join(__dirname, '../src/data/processed/names-categories-with-descriptions.json');
+  const pointsDataPath = path.join(__dirname, '../src/data/processed/points-with-multilingual-names.json');
   const points = JSON.parse(fs.readFileSync(pointsDataPath, 'utf8'));
   
   // Create mapping of uploaded files

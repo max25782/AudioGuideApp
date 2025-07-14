@@ -10,6 +10,8 @@ import polyline from '@mapbox/polyline';
 import { PointOfInterest, RootStackParamList } from '../types';
 import { audioService } from '../services/AudioService';
 import { wazeService } from '../services/WazeService';
+import i18nService from '../services/I18nService';
+import preprocessedDataService from '../services/PreprocessedDataService';
 
 type PointDetailScreenRouteProp = {
   key: string;
@@ -29,6 +31,21 @@ export default function PointDetailScreen() {
   const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(null);
   const [routeCoords, setRouteCoords] = useState<{ latitude: number; longitude: number }[]>([]);
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
+  const [currentPoint, setCurrentPoint] = useState<PointOfInterest>(point);
+
+  // Инициализируем точку с актуальным статусом посещения
+  useEffect(() => {
+    const initializePoint = async () => {
+      // Получаем обновленные данные точки с информацией о посещении
+      const allPoints = preprocessedDataService.getAllPoints();
+      const updatedPoint = allPoints.find(p => p.id === point.id);
+      if (updatedPoint) {
+        setCurrentPoint(updatedPoint);
+      }
+    };
+    
+    initializePoint();
+  }, [point.id]);
 
   // Получаем текущее местоположение пользователя
   useEffect(() => {
@@ -65,13 +82,13 @@ export default function PointDetailScreen() {
       const data = await response.json();
       if (!data.routes || !data.routes.length) {
         console.log('Directions API error:', data);
-        Alert.alert('Ошибка маршрута', 'Не удалось получить маршрут от Google Directions API');
+        Alert.alert(i18nService.t('routeError'), i18nService.t('routeNotFound'));
         return;
       }
       const points = polyline.decode(data.routes[0].overview_polyline.points);
       if (!points.length) {
         console.log('Polyline decode error:', data.routes[0]);
-        Alert.alert('Ошибка маршрута', 'Polyline пустой');
+        Alert.alert(i18nService.t('routeError'), i18nService.t('routeNotFound'));
         return;
       }
       const coords = points.map(([latitude, longitude]: [number, number]) => ({ latitude, longitude }));
@@ -91,14 +108,14 @@ export default function PointDetailScreen() {
         // Если аудио не играет, запускаем его
         const success = await audioService.playPointAudio(point.audioFilePath);
         if (!success) {
-          Alert.alert('Ошибка', 'Не удалось воспроизвести аудиогид');
+          Alert.alert(i18nService.t('error'), i18nService.t('audioNotAvailable'));
         } else {
           setIsAudioPlaying(true);
         }
       }
     } catch (error) {
-      console.error('Ошибка воспроизведения аудио:', error);
-      Alert.alert('Ошибка', 'Проблема с аудиофайлом');
+      console.error(i18nService.t('audioError'), error);
+      Alert.alert(i18nService.t('error'), i18nService.t('audioPlaybackError'));
     }
   };
 
@@ -109,8 +126,8 @@ export default function PointDetailScreen() {
         setIsAudioPlaying(false);
       }
     } catch (error) {
-      console.error('Ошибка паузы аудио:', error);
-      Alert.alert('Ошибка', 'Не удалось поставить на паузу');
+      console.error(i18nService.t('audioError'), error);
+      Alert.alert(i18nService.t('error'), i18nService.t('audioNotAvailable'));
     }
   };
 
@@ -119,8 +136,8 @@ export default function PointDetailScreen() {
       await audioService.stopAudio();
       setIsAudioPlaying(false);
     } catch (error) {
-      console.error('Ошибка остановки аудио:', error);
-      Alert.alert('Ошибка', 'Не удалось остановить аудио');
+      console.error(i18nService.t('audioError'), error);
+      Alert.alert(i18nService.t('error'), i18nService.t('audioNotAvailable'));
     }
   };
 
@@ -129,29 +146,41 @@ export default function PointDetailScreen() {
       const isWazeAvailable = await wazeService.isWazeInstalled();
       
       if (isWazeAvailable) {
-        await wazeService.openWazeNavigation(point.latitude, point.longitude);
+        await wazeService.openWazeNavigation(currentPoint.latitude, currentPoint.longitude);
       } else {
-        await wazeService.openAlternativeMaps(point.latitude, point.longitude);
+        await wazeService.openAlternativeMaps(currentPoint.latitude, currentPoint.longitude);
       }
     } catch (error) {
-      console.error('Ошибка навигации:', error);
-      Alert.alert('Ошибка', 'Не удалось открыть навигацию');
+      console.error(i18nService.t('navigationError'), error);
+      Alert.alert(i18nService.t('error'), i18nService.t('navigationError'));
+    }
+  };
+
+  const handleToggleVisited = async () => {
+    try {
+      const newVisitedStatus = await preprocessedDataService.togglePointVisited(
+        currentPoint.id, 
+        currentPoint.coordinates
+      );
+      
+      // Обновляем локальное состояние точки
+      const updatedPoint = {
+        ...currentPoint,
+        isVisited: newVisitedStatus,
+        visitedAt: newVisitedStatus ? new Date() : undefined
+      };
+      
+      setCurrentPoint(updatedPoint);
+      
+      console.log(`🎯 Точка ${currentPoint.id} ${newVisitedStatus ? 'добавлена в' : 'удалена из'} посещенные`);
+    } catch (error) {
+      console.error('Ошибка изменения статуса посещения:', error);
+      Alert.alert('Ошибка', 'Не удалось изменить статус посещения');
     }
   };
 
   const getCategoryDisplayName = (category: string): string => {
-    const categoryNames: Record<string, string> = {
-      historical: 'История',
-      religious: 'Религия',
-      children: 'Детские',
-      nature: 'Природа',
-      culture: 'Культура',
-      tourism: 'Туризм',
-      architecture: 'Архитектура',
-      amenity: 'Удобства',
-      leisure: 'Досуг',
-    };
-    return categoryNames[category] || category;
+    return i18nService.t(category as any);
   };
 
   return (
@@ -162,8 +191,8 @@ export default function PointDetailScreen() {
           <MapView
             style={styles.map}
             region={{
-              latitude: point.latitude,
-              longitude: point.longitude,
+              latitude: currentPoint.latitude,
+              longitude: currentPoint.longitude,
               latitudeDelta: 0.05,
               longitudeDelta: 0.05,
             }}
@@ -172,17 +201,19 @@ export default function PointDetailScreen() {
           >
             <Marker
               coordinate={{
-                latitude: point.latitude,
-                longitude: point.longitude,
+                latitude: currentPoint.latitude,
+                longitude: currentPoint.longitude,
               }}
-              title={point.name}
-              description={point.description}
+              title={`${currentPoint.isVisited ? '✓ ' : ''}${i18nService.getPointName(currentPoint.name)}`}
+              description={`${i18nService.getPointDescription(currentPoint.description).substring(0, 100)}${currentPoint.isVisited ? '\n🎯 Посещено' : ''}`}
+              pinColor={currentPoint.isVisited ? '#4CAF50' : 'red'}
             />
             {userLocation && (
               <Marker
                 coordinate={userLocation}
                 pinColor="blue"
-                title="המיקום שלי"
+                title={i18nService.t('myLocation')}
+                description=""
               />
             )}
             {routeCoords.length > 0 && (
@@ -197,9 +228,20 @@ export default function PointDetailScreen() {
 
         {/* Информация о точке */}
         <View style={styles.infoContainer}>
-          <Text style={styles.title}>{point.name}</Text>
-          <Text style={styles.category}>{getCategoryDisplayName(point.category)}</Text>
-          <Text style={styles.description}>{point.description}</Text>
+          <Text style={[styles.title, i18nService.isRTL() && styles.rtlText]}>
+            {i18nService.getPointName(currentPoint.name)}
+          </Text>
+          <Text style={[styles.category, i18nService.isRTL() && styles.rtlText]}>
+            {getCategoryDisplayName(currentPoint.category)}
+          </Text>
+          <Text style={[styles.description, i18nService.isRTL() && styles.rtlText]}>
+            {i18nService.getPointDescription(currentPoint.description)}
+          </Text>
+          {currentPoint.isVisited && currentPoint.visitedAt && (
+            <Text style={[styles.visitedInfo, i18nService.isRTL() && styles.rtlText]}>
+              🎯 Посещено: {new Date(currentPoint.visitedAt).toLocaleDateString()}
+            </Text>
+          )}
         </View>
 
         {/* Кнопки действий */}
@@ -210,8 +252,8 @@ export default function PointDetailScreen() {
               style={[styles.actionButton, styles.audioButton, isAudioPlaying && styles.audioButtonPlaying]}
               onPress={handlePlayAudio}
             >
-              <Text style={styles.buttonText}>
-                {isAudioPlaying ? '⏹️ Остановить' : '🎵 Слушать аудиогид'}
+              <Text style={[styles.buttonText, i18nService.isRTL() && styles.rtlText]}>
+                {isAudioPlaying ? `⏹️ ${i18nService.t('stopAudio')}` : `🎵 ${i18nService.t('audioGuide')}`}
               </Text>
             </TouchableOpacity>
 
@@ -221,24 +263,42 @@ export default function PointDetailScreen() {
                   style={[styles.actionButton, styles.pauseButton]}
                   onPress={handlePauseAudio}
                 >
-                  <Text style={styles.buttonText}>⏸️ Пауза</Text>
+                  <Text style={[styles.buttonText, i18nService.isRTL() && styles.rtlText]}>
+                    ⏸️ {i18nService.t('pauseAudio')}
+                  </Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
                   style={[styles.actionButton, styles.stopButton]}
                   onPress={handleStopAudio}
                 >
-                  <Text style={styles.buttonText}>⏹️ Стоп</Text>
+                  <Text style={[styles.buttonText, i18nService.isRTL() && styles.rtlText]}>
+                    ⏹️ {i18nService.t('stopAudio')}
+                  </Text>
                 </TouchableOpacity>
               </View>
             )}
           </View>
 
           <TouchableOpacity
+            style={[
+              styles.actionButton, 
+              currentPoint.isVisited ? styles.removeVisitedButton : styles.addVisitedButton
+            ]}
+            onPress={handleToggleVisited}
+          >
+            <Text style={[styles.buttonText, i18nService.isRTL() && styles.rtlText]}>
+              {currentPoint.isVisited ? '✓ Посещено' : '+ Отметить посещение'}
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
             style={[styles.actionButton, styles.navigateButton]}
             onPress={handleNavigate}
           >
-            <Text style={styles.buttonText}>🗺️ Проложить маршрут</Text>
+            <Text style={[styles.buttonText, i18nService.isRTL() && styles.rtlText]}>
+              🗺️ {i18nService.t('navigate')}
+            </Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -334,9 +394,25 @@ const styles = StyleSheet.create({
   navigateButton: {
     backgroundColor: '#2196F3',
   },
+  addVisitedButton: {
+    backgroundColor: '#FF9800',
+  },
+  removeVisitedButton: {
+    backgroundColor: '#4CAF50',
+  },
+  visitedInfo: {
+    fontSize: 14,
+    color: '#4CAF50',
+    fontWeight: 'bold',
+    marginTop: 10,
+    fontStyle: 'italic',
+  },
   buttonText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  rtlText: {
+    textAlign: 'right',
   },
 }); 

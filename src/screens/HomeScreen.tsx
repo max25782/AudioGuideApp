@@ -15,11 +15,14 @@ import preprocessedDataService from '../services/PreprocessedDataService';
 import { LocationService } from '../services/LocationService';
 import { audioService } from '../services/AudioService';
 import { wazeService } from '../services/WazeService';
+import i18nService from '../services/I18nService';
+import userService from '../services/UserService';
 
 import { PointOfInterest, PointCategory, Location, RootStackParamList } from '../types';
 import CategoryFilter from '../components/CategoryFilter';
 import MapView from '../components/MapView';
 import PointsList from '../components/PointsList';
+import SimpleLanguageSelector from '../components/SimpleLanguageSelector';
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -34,6 +37,8 @@ export function HomeScreen() {
   const [isLoading, setIsLoading] = useState(true);
   const [isLocationLoading, setIsLocationLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [forceUpdate, setForceUpdate] = useState(0);
+  const [isLocationTracking, setIsLocationTracking] = useState(false);
   
   // Местоположение по умолчанию - центр Израиля (Иерусалим)
   const [mapLocation, setMapLocation] = useState<Location>({
@@ -50,27 +55,67 @@ export function HomeScreen() {
     initializeData();
     // Автоматически получаем местоположение при загрузке
     getCurrentLocation();
+    
+    // Listen for language changes
+    const handleLanguageChange = () => {
+      setForceUpdate(prev => prev + 1);
+    };
+    
+    i18nService.addLanguageChangeListener(handleLanguageChange);
+    
+    return () => {
+      i18nService.removeLanguageChangeListener(handleLanguageChange);
+      // Останавливаем отслеживание местоположения при размонтировании
+      if (isLocationTracking) {
+        locationService.stopLocationTracking();
+      }
+    };
   }, []);
+
+  // Функция для обновления точек после автоматического посещения
+  const refreshPointsData = async () => {
+    try {
+      const updatedPoints = preprocessedDataService.getAllPoints();
+      setAllPoints(updatedPoints);
+      
+      if (selectedCategory === 'all') {
+        setPoints(updatedPoints);
+      } else {
+        const categoryPoints = preprocessedDataService.getPointsByCategory(selectedCategory);
+        setPoints(categoryPoints);
+      }
+    } catch (error) {
+      console.error('Ошибка обновления точек:', error);
+    }
+  };
 
   const initializeData = async () => {
     try {
       setIsLoading(true);
-      console.log('🚀 Инициализация данных...');
+      console.log('🚀', i18nService.t('dataInitialization'));
       
-      // Загружаем все точки из сервиса
+      // Инициализируем пользователя
+      const user = await userService.initializeUser();
+      console.log('👤 Пользователь инициализирован:', user.id);
+      console.log('📈 Всего посещений:', user.totalVisits);
+      
+      // Загружаем все точки из сервиса (теперь с информацией о посещениях)
       const loadedPoints = preprocessedDataService.getAllPoints();
-      console.log(`✅ Загружено ${loadedPoints.length} точек`);
+      console.log('✅', i18nService.t('pointsLoaded', { count: loadedPoints.length }));
+      
+      const visitedCount = loadedPoints.filter(p => p.isVisited).length;
+      console.log('🎯 Посещенных точек:', visitedCount);
       
       setAllPoints(loadedPoints);
       setPoints(loadedPoints);
       
       // Получаем статистику
       const stats = preprocessedDataService.getStatistics();
-      console.log('📊 Статистика:', stats);
+      console.log('📊', i18nService.t('statistics'), stats);
       
     } catch (error) {
-      console.error('❌ Ошибка инициализации:', error);
-      Alert.alert('Ошибка', 'Не удалось загрузить данные');
+      console.error('❌', i18nService.t('initializationError'), error);
+      Alert.alert(i18nService.t('error'), i18nService.t('dataLoadError'));
     } finally {
       setIsLoading(false);
     }
@@ -83,14 +128,14 @@ export function HomeScreen() {
       if (location) {
         setCurrentLocation(location);
         setMapLocation(location);
-        console.log('📍 Текущее местоположение:', location);
+        console.log('📍', i18nService.t('currentLocation'), location);
         
         // Показываем ближайшие точки после получения местоположения
         await showNearbyPoints(location.latitude, location.longitude);
       }
     } catch (error) {
-      console.error('❌ Ошибка получения местоположения:', error);
-      Alert.alert('Ошибка', 'Не удалось получить местоположение');
+      console.error('❌', i18nService.t('locationError'), error);
+      Alert.alert(i18nService.t('error'), i18nService.t('locationNotAvailable'));
     } finally {
       setIsLocationLoading(false);
     }
@@ -103,11 +148,14 @@ export function HomeScreen() {
       if (categoryId === 'all') {
         // Для "Все" всегда показываем все точки
         nearbyPoints = allPoints;
-        console.log(`🔍 Показываю все ${nearbyPoints.length} точек`);
+        console.log('🔍', i18nService.t('showingAllPoints', { count: nearbyPoints.length }));
       } else {
         // Для конкретных категорий показываем только эту категорию
         nearbyPoints = preprocessedDataService.getPointsByCategory(categoryId);
-        console.log(`🔍 Найдено ${nearbyPoints.length} точек для категории: ${categoryId}`);
+        console.log('🔍', i18nService.t('showingPointsForCategory', { 
+          count: nearbyPoints.length, 
+          category: i18nService.t(categoryId) 
+        }));
       }
       
       setPoints(nearbyPoints);
@@ -126,19 +174,54 @@ export function HomeScreen() {
     navigation.navigate('PointDetail', { point });
   };
 
+  const handleToggleVisited = async (point: PointOfInterest) => {
+    try {
+      const newVisitedStatus = await preprocessedDataService.togglePointVisited(
+        point.id, 
+        point.coordinates
+      );
+      
+      // Обновляем список точек
+      await refreshPointsData();
+      
+      console.log(`🎯 Точка ${point.id} ${newVisitedStatus ? 'добавлена в' : 'удалена из'} посещенные`);
+    } catch (error) {
+      console.error('Ошибка изменения статуса посещения:', error);
+    }
+  };
+
   const showNearbyPoints = async (latitude: number, longitude: number) => {
     try {
       let nearbyPoints: PointOfInterest[] = [];
       
       if (selectedCategory === 'all') {
         nearbyPoints = preprocessedDataService.getNearbyPoints(latitude, longitude, 15000);
-        console.log(`🔍 Показываю ${nearbyPoints.length} ближайших точек`);
+        console.log('🔍', i18nService.t('showingNearbyPoints', { count: nearbyPoints.length }));
       } else {
         nearbyPoints = preprocessedDataService.getNearbyPointsByCategory(latitude, longitude, selectedCategory, 15000);
-        console.log(`🔍 Показываю ${nearbyPoints.length} ближайших точек категории: ${selectedCategory}`);
+        console.log('🔍', i18nService.t('showingPointsForCategory', { 
+          count: nearbyPoints.length, 
+          category: i18nService.t(selectedCategory) 
+        }));
       }
       
       setPoints(nearbyPoints);
+
+      // Запускаем отслеживание местоположения для автоматической отметки посещений
+      if (!isLocationTracking) {
+        try {
+          setIsLocationTracking(true);
+          await locationService.startLocationTracking((newLocation) => {
+            setCurrentLocation(newLocation);
+            // Периодически обновляем данные о точках
+            refreshPointsData();
+          });
+          console.log('📍 Отслеживание посещений запущено');
+        } catch (error) {
+          console.error('Ошибка запуска отслеживания посещений:', error);
+          setIsLocationTracking(false);
+        }
+      }
     } catch (error) {
       console.error('❌ Ошибка получения ближайших точек:', error);
     }
@@ -156,12 +239,33 @@ export function HomeScreen() {
   const playAudio = async (point: PointOfInterest) => {
     try {
       const success = await audioService.playPointAudio(point.audioFilePath);
-      if (!success) {
-        Alert.alert('Ошибка', 'Не удалось воспроизвести аудио');
+      if (success) {
+        // Отмечаем точку как посещенную с воспроизведенным аудио
+        await preprocessedDataService.markPointAsVisited(
+          point.id, 
+          point.coordinates, 
+          true // аудио было воспроизведено
+        );
+        
+        // Обновляем список точек, чтобы отобразить изменения
+        const updatedPoints = preprocessedDataService.getAllPoints();
+        setAllPoints(updatedPoints);
+        
+        // Обновляем отфильтрованные точки
+        if (selectedCategory === 'all') {
+          setPoints(updatedPoints);
+        } else {
+          const categoryPoints = preprocessedDataService.getPointsByCategory(selectedCategory);
+          setPoints(categoryPoints);
+        }
+        
+        console.log('🎵 Точка отмечена как посещенная с аудио:', point.id);
+      } else {
+        Alert.alert(i18nService.t('error'), i18nService.t('audioNotAvailable'));
       }
     } catch (error) {
-      console.error('❌ Ошибка воспроизведения аудио:', error);
-      Alert.alert('Ошибка', 'Проблема с аудио файлом');
+      console.error('❌', i18nService.t('audioError'), error);
+      Alert.alert(i18nService.t('error'), i18nService.t('audioPlaybackError'));
     }
   };
 
@@ -175,42 +279,30 @@ export function HomeScreen() {
       } else {
         // Предлагаем альтернативу
         Alert.alert(
-          'Waze не установлен',
-          'Открыть в другом навигационном приложении?',
+          i18nService.t('wazeNotInstalled'),
+          i18nService.t('openInOtherApp'),
           [
-            { text: 'Отмена', style: 'cancel' },
-            { text: 'Установить', onPress: () => wazeService.openAlternativeMaps(point.latitude, point.longitude) },
+            { text: i18nService.t('cancel'), style: 'cancel' },
+            { text: i18nService.t('install'), onPress: () => wazeService.openAlternativeMaps(point.latitude, point.longitude) },
           ]
         );
       }
     } catch (error) {
-      console.error('❌ Ошибка открытия навигации:', error);
-      Alert.alert('Ошибка', 'Не удалось открыть навигацию');
+      console.error('❌', i18nService.t('navigationError'), error);
+      Alert.alert(i18nService.t('error'), i18nService.t('navigationError'));
     }
   };
 
   const formatPointInfo = (point: PointOfInterest) => {
     return {
-      title: point.name,
+      title: i18nService.getPointName(point.name),
       subtitle: getCategoryName(point.category),
       coords: `${point.latitude.toFixed(4)}, ${point.longitude.toFixed(4)}`
     };
   };
 
   const getCategoryName = (category: PointCategory): string => {
-    const categoryNames: Record<PointCategory, string> = {
-      historical: 'История',
-      religious: 'Религия',
-      children: 'Детские',
-      nature: 'Природа',
-      culture: 'Культура',
-      tourism: 'Туризм',
-      architecture: 'Архитектура',
-      amenity: 'Удобства',
-      leisure: 'Досуг',
-    };
-
-    return categoryNames[category] || category;
+    return i18nService.t(category);
   };
 
   const getCategoryColor = (category: PointCategory): string => {
@@ -237,7 +329,7 @@ export function HomeScreen() {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.loadingContainer}>
-          <Text style={styles.loadingText}>Загрузка данных...</Text>
+          <Text style={styles.loadingText}>{i18nService.t('dataInitialization')}</Text>
         </View>
       </SafeAreaView>
     );
@@ -247,8 +339,15 @@ export function HomeScreen() {
     <SafeAreaView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.title}>Аудиогид Израиля</Text>
-        <Text style={styles.subtitle}>{points.length} точек интереса</Text>
+        <View style={styles.headerTop}>
+          <Text style={[styles.title, i18nService.isRTL() && styles.rtlText]}>
+            {i18nService.t('pointsOfInterest')}
+          </Text>
+          <SimpleLanguageSelector />
+        </View>
+        <Text style={[styles.subtitle, i18nService.isRTL() && styles.rtlText]}>
+          {i18nService.t('pointsCount', { count: points.length })}
+        </Text>
       </View>
 
       {/* Location Button */}
@@ -257,19 +356,44 @@ export function HomeScreen() {
         onPress={getCurrentLocation}
         disabled={isLocationLoading}
       >
-        <Text style={styles.locationButtonText}>
-          {isLocationLoading ? 'Определение местоположения...' : '📍 Показать ближайшие'}
+        <Text style={[styles.locationButtonText, i18nService.isRTL() && styles.rtlText]}>
+          {isLocationLoading ? i18nService.t('gettingLocation') : `📍 ${i18nService.t('nearbyPoints')}`}
         </Text>
       </TouchableOpacity>
 
       {/* Category Filter */}
-      <CategoryFilter
-        categories={getAvailableCategories()}
-        selectedCategory={selectedCategory}
-        onCategorySelect={handleCategorySelect}
-        getCategoryName={getCategoryName}
-        getCategoryColor={getCategoryColor}
-      />
+                <CategoryFilter
+            categories={getAvailableCategories()}
+            selectedCategory={selectedCategory}
+            onCategorySelect={handleCategorySelect}
+            getCategoryName={getCategoryName}
+            getCategoryColor={getCategoryColor}
+          />
+          
+          {/* Кнопка для показа только посещенных точек */}
+          <TouchableOpacity
+            style={[
+              styles.visitedFilterButton,
+              selectedCategory === 'visited' && styles.visitedFilterButtonActive
+            ]}
+            onPress={() => {
+              if (selectedCategory === 'visited') {
+                setSelectedCategory('all');
+                setPoints(allPoints);
+              } else {
+                setSelectedCategory('visited' as any);
+                const visitedPoints = preprocessedDataService.getVisitedPoints();
+                setPoints(visitedPoints);
+              }
+            }}
+          >
+            <Text style={[
+              styles.visitedFilterText,
+              selectedCategory === 'visited' && styles.visitedFilterTextActive
+            ]}>
+              🎯 Посещенные ({userService.getCurrentUser()?.totalVisits || 0})
+            </Text>
+          </TouchableOpacity>
 
       {/* Map - всегда показываем */}
       <MapView
@@ -285,6 +409,7 @@ export function HomeScreen() {
         onPointPress={handlePointPress}
         onPlayAudio={playAudio}
         onOpenInWaze={openInWaze}
+        onToggleVisited={handleToggleVisited}
         formatPointInfo={formatPointInfo}
         getCategoryColor={getCategoryColor}
         refreshing={refreshing}
@@ -312,15 +437,24 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#f8f9fa',
   },
+  headerTop: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 5,
+  },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 5,
     color: '#333',
+    flex: 1,
   },
   subtitle: {
     fontSize: 16,
     color: '#666',
+  },
+  rtlText: {
+    textAlign: 'right',
   },
   locationButton: {
     margin: 20,
@@ -332,6 +466,28 @@ const styles = StyleSheet.create({
   locationButtonText: {
     fontSize: 16,
     fontWeight: 'bold',
+    color: '#fff',
+  },
+  // Стили для кнопки посещенных точек
+  visitedFilterButton: {
+    margin: 10,
+    padding: 12,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 8,
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: 'transparent',
+  },
+  visitedFilterButtonActive: {
+    backgroundColor: '#4CAF50',
+    borderColor: '#45a049',
+  },
+  visitedFilterText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#666',
+  },
+  visitedFilterTextActive: {
     color: '#fff',
   },
 }); 

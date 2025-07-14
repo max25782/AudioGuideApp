@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 // Load the data
-const existingData = JSON.parse(fs.readFileSync('src/data/processed/names-categories-with-descriptions.json', 'utf8'));
+const existingData = JSON.parse(fs.readFileSync('src/data/processed/points-with-multilingual-names.json', 'utf8'));
 const pbfData = JSON.parse(fs.readFileSync('src/data/processed/pbf-points.json', 'utf8'));
 
 console.log('🔍 Checking why only 3 out of 10 PBF points were merged...\n');

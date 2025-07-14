@@ -1,31 +1,40 @@
 import { PointOfInterest, PointCategory } from '../types';
+import userService from './UserService';
 
-// Импортируем полные данные с описаниями (5,684 точки)
-import namesCategoriesWithDescriptions from '../data/processed/names-categories-with-descriptions.json';
+// Импортируем полные данные с многоязычными названиями (5,684 точки)
+import pointsWithMultilingualNames from '../data/processed/points-with-multilingual-names.json';
 // Импорт удален - используем только основной файл с данными
 import namesStats from '../data/processed/names-stats.json';
 
-// Типы для новых данных с описаниями
+// Типы для новых данных с многоязычными названиями
 interface NewPointData {
   id: string;
-  name: string;
+  name: string | {
+    ru?: string;
+    he?: string;
+    en?: string;
+  };
   category: string;
   coordinates: {
     latitude: number;
     longitude: number;
   };
-  description: string;
+  description: {
+    ru: string;
+    he: string;
+    en: string;
+  };
 }
 
 // Функция для преобразования новых данных в PointOfInterest
 function convertNewPointToTyped(raw: NewPointData): PointOfInterest {
   return {
     id: raw.id,
-    name: raw.name,
+    name: raw.name, // Теперь поддерживает как строки, так и многоязычные объекты
     category: raw.category as PointCategory,
     coordinates: raw.coordinates,
     // Совместимость со старым API
-    title: raw.name,
+    title: typeof raw.name === 'string' ? raw.name : raw.name.he || raw.name.en || raw.name.ru || 'Unknown',
     description: raw.description,
     audioFilePath: `${raw.id}.mp3`,
     latitude: raw.coordinates.latitude,
@@ -34,8 +43,8 @@ function convertNewPointToTyped(raw: NewPointData): PointOfInterest {
 }
 
 /**
- * Сервис для работы с новыми данными names-categories-with-descriptions.json
- * Использует 5,684 точки из полного датасета
+ * Сервис для работы с новыми данными points-with-multilingual-names.json
+ * Использует 5,684 точки из полного датасета с многоязычными названиями
  */
 class PreprocessedDataService {
   private allPoints: PointOfInterest[];
@@ -44,10 +53,10 @@ class PreprocessedDataService {
 
   constructor() {
     try {
-      console.log('[PreprocessedDataService] Загружаю полные данные (5,684 точек)...');
+      console.log('[PreprocessedDataService] Загружаю полные данные с многоязычными названиями (5,684 точек)...');
       
-      // Используем полные данные с описаниями
-      const rawData = namesCategoriesWithDescriptions as NewPointData[];
+      // Используем полные данные с многоязычными названиями
+      const rawData = pointsWithMultilingualNames as NewPointData[];
       this.allPoints = rawData.map(convertNewPointToTyped);
       
       console.log(`[PreprocessedDataService] Загружено ${this.allPoints.length} точек`);
@@ -74,7 +83,23 @@ class PreprocessedDataService {
    * Получить все точки
    */
   getAllPoints(): PointOfInterest[] {
-    return this.allPoints;
+    return this.enrichPointsWithVisitStatus(this.allPoints);
+  }
+
+  /**
+   * Обогащаем точки информацией о посещениях
+   */
+  private enrichPointsWithVisitStatus(points: PointOfInterest[]): PointOfInterest[] {
+    return points.map(point => {
+      const isVisited = userService.isPointVisited(point.id);
+      const visitedPoint = userService.getVisitedPoints().find(v => v.pointId === point.id);
+      
+      return {
+        ...point,
+        isVisited,
+        visitedAt: visitedPoint?.visitedAt
+      };
+    });
   }
 
   /**
@@ -85,7 +110,7 @@ class PreprocessedDataService {
       console.log(`[PreprocessedDataService] Получаю точки категории: ${category}`);
       const categoryPoints = this.allPoints.filter(point => point.category === category);
       console.log(`[PreprocessedDataService] Найдено ${categoryPoints.length} точек категории ${category}`);
-      return categoryPoints;
+      return this.enrichPointsWithVisitStatus(categoryPoints);
     } catch (error) {
       console.error('[PreprocessedDataService] Ошибка получения точек по категории:', error);
       return [];
@@ -103,7 +128,7 @@ class PreprocessedDataService {
    * Получить точки рядом с местоположением
    */
   getNearbyPoints(latitude: number, longitude: number, radiusInMeters: number = 10000): PointOfInterest[] {
-    return this.allPoints
+    const nearbyPoints = this.allPoints
       .map(point => ({
         point,
         distance: this.calculateDistance(latitude, longitude, point.coordinates.latitude, point.coordinates.longitude)
@@ -112,6 +137,8 @@ class PreprocessedDataService {
       .sort((a, b) => a.distance - b.distance)
       .slice(0, 50) // Ограничиваем до 50 ближайших точек
       .map(({ point }) => point);
+
+    return this.enrichPointsWithVisitStatus(nearbyPoints);
   }
 
   /**
@@ -150,8 +177,9 @@ class PreprocessedDataService {
     return {
       totalPoints: this.statistics.totalPoints,
       categories: this.statistics.categories,
-      dataSource: 'names-categories-with-descriptions.json',
-      extractedAt: this.statistics.extractedAt
+      dataSource: 'points-with-multilingual-names.json',
+      extractedAt: this.statistics.extractedAt,
+      multilingualNames: this.allPoints.filter(point => typeof point.name === 'object').length
     };
   }
 
@@ -181,14 +209,23 @@ class PreprocessedDataService {
   }
 
   /**
-   * Поиск точек по названию
+   * Поиск точек по названию (поддерживает многоязычные названия)
    */
   searchPoints(query: string): PointOfInterest[] {
     const searchTerm = query.toLowerCase();
-    return this.allPoints.filter(point => 
-      point.name.toLowerCase().includes(searchTerm) ||
-      point.category.toLowerCase().includes(searchTerm)
-    ).slice(0, 20);
+    return this.allPoints.filter(point => {
+      // Поиск в названии
+      if (typeof point.name === 'string') {
+        return point.name.toLowerCase().includes(searchTerm);
+      } else if (typeof point.name === 'object') {
+        return (point.name.he && point.name.he.toLowerCase().includes(searchTerm)) ||
+               (point.name.en && point.name.en.toLowerCase().includes(searchTerm)) ||
+               (point.name.ru && point.name.ru.toLowerCase().includes(searchTerm));
+      }
+      
+      // Поиск в категории
+      return point.category.toLowerCase().includes(searchTerm);
+    }).slice(0, 20);
   }
 
   /**
@@ -196,7 +233,73 @@ class PreprocessedDataService {
    */
   getRandomPoints(count: number = 10): PointOfInterest[] {
     const shuffled = [...this.allPoints].sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, count);
+    return this.enrichPointsWithVisitStatus(shuffled.slice(0, count));
+  }
+
+  /**
+   * Получить только посещенные пользователем точки
+   */
+  getVisitedPoints(): PointOfInterest[] {
+    const visitedPointIds = userService.getVisitedPoints().map(v => v.pointId);
+    const visitedPoints = this.allPoints.filter(point => visitedPointIds.includes(point.id));
+    return this.enrichPointsWithVisitStatus(visitedPoints);
+  }
+
+  /**
+   * Получить непосещенные точки в радиусе
+   */
+  getUnvisitedNearbyPoints(latitude: number, longitude: number, radiusInMeters: number = 10000): PointOfInterest[] {
+    const nearbyPoints = this.getNearbyPoints(latitude, longitude, radiusInMeters);
+    return nearbyPoints.filter(point => !point.isVisited);
+  }
+
+  /**
+   * Получить статистику посещений по категориям
+   */
+  getVisitStatsByCategory(): Record<PointCategory, { visited: number; total: number }> {
+    const stats: Record<PointCategory, { visited: number; total: number }> = {
+      historical: { visited: 0, total: 0 },
+      religious: { visited: 0, total: 0 },
+      children: { visited: 0, total: 0 },
+      nature: { visited: 0, total: 0 },
+      culture: { visited: 0, total: 0 },
+      tourism: { visited: 0, total: 0 },
+      architecture: { visited: 0, total: 0 },
+      amenity: { visited: 0, total: 0 },
+      leisure: { visited: 0, total: 0 },
+    };
+
+    this.allPoints.forEach(point => {
+      if (stats[point.category]) {
+        stats[point.category].total++;
+        if (userService.isPointVisited(point.id)) {
+          stats[point.category].visited++;
+        }
+      }
+    });
+
+    return stats;
+  }
+
+  /**
+   * Отметить точку как посещенную
+   */
+  async markPointAsVisited(pointId: string, coordinates: { latitude: number; longitude: number }, audioPlayed: boolean = false): Promise<void> {
+    await userService.markPointAsVisited(pointId, coordinates, audioPlayed);
+  }
+
+  /**
+   * Снять отметку посещения точки
+   */
+  async removePointFromVisited(pointId: string): Promise<void> {
+    await userService.removePointFromVisited(pointId);
+  }
+
+  /**
+   * Переключить статус посещения точки
+   */
+  async togglePointVisited(pointId: string, coordinates: { latitude: number; longitude: number }): Promise<boolean> {
+    return await userService.togglePointVisited(pointId, coordinates);
   }
 }
 

@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { HomeScreen } from './src/screens/HomeScreen';
 import PointDetailScreen from './src/screens/PointDetailScreen';
 import { RootStackParamList } from './src/types';
+import i18nService from './src/services/I18nService';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -22,8 +23,8 @@ export default function App() {
           component={PointDetailScreen}
           options={{
             headerShown: true,
-            title: 'Детали точки',
-            headerBackTitle: 'Назад'
+            title: i18nService.t('pointDetail'),
+            headerBackTitle: i18nService.t('home')
           }}
         />
       </Stack.Navigator>
