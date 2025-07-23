@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, Alert, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -12,6 +12,7 @@ import { audioService } from '../services/AudioService';
 import { wazeService } from '../services/WazeService';
 import i18nService from '../services/I18nService';
 import preprocessedDataService from '../services/PreprocessedDataService';
+import { pointDetailScreenStyles } from '../styles';
 
 type PointDetailScreenRouteProp = {
   key: string;
@@ -106,7 +107,8 @@ export default function PointDetailScreen() {
         setIsAudioPlaying(false);
       } else {
         // Если аудио не играет, запускаем его
-        const success = await audioService.playPointAudio(point.audioFilePath);
+        const audioPath = point.audioFilePath || `${point.id}.mp3`;
+        const success = await audioService.playPointAudio(audioPath);
         if (!success) {
           Alert.alert(i18nService.t('error'), i18nService.t('audioNotAvailable'));
         } else {
@@ -184,12 +186,12 @@ export default function PointDetailScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+    <SafeAreaView style={pointDetailScreenStyles.container}>
+      <ScrollView contentContainerStyle={pointDetailScreenStyles.scrollContent}>
         {/* Карта */}
-        <View style={styles.mapContainer}>
+        <View style={pointDetailScreenStyles.mapContainer}>
           <MapView
-            style={styles.map}
+            style={pointDetailScreenStyles.map}
             region={{
               latitude: currentPoint.latitude,
               longitude: currentPoint.longitude,
@@ -227,52 +229,52 @@ export default function PointDetailScreen() {
         </View>
 
         {/* Информация о точке */}
-        <View style={styles.infoContainer}>
-          <Text style={[styles.title, i18nService.isRTL() && styles.rtlText]}>
+        <View style={pointDetailScreenStyles.infoContainer}>
+          <Text style={[pointDetailScreenStyles.title, i18nService.isRTL() && pointDetailScreenStyles.rtlText]}>
             {i18nService.getPointName(currentPoint.name)}
           </Text>
-          <Text style={[styles.category, i18nService.isRTL() && styles.rtlText]}>
+          <Text style={[pointDetailScreenStyles.category, i18nService.isRTL() && pointDetailScreenStyles.rtlText]}>
             {getCategoryDisplayName(currentPoint.category)}
           </Text>
-          <Text style={[styles.description, i18nService.isRTL() && styles.rtlText]}>
+          <Text style={[pointDetailScreenStyles.description, i18nService.isRTL() && pointDetailScreenStyles.rtlText]}>
             {i18nService.getPointDescription(currentPoint.description)}
           </Text>
           {currentPoint.isVisited && currentPoint.visitedAt && (
-            <Text style={[styles.visitedInfo, i18nService.isRTL() && styles.rtlText]}>
+            <Text style={[pointDetailScreenStyles.visitedInfo, i18nService.isRTL() && pointDetailScreenStyles.rtlText]}>
               🎯 Посещено: {new Date(currentPoint.visitedAt).toLocaleDateString()}
             </Text>
           )}
         </View>
 
         {/* Кнопки действий */}
-        <View style={styles.buttonsContainer}>
+        <View style={pointDetailScreenStyles.buttonsContainer}>
           {/* Аудио контролы */}
-          <View style={styles.audioControlsContainer}>
+          <View style={pointDetailScreenStyles.audioControlsContainer}>
             <TouchableOpacity
-              style={[styles.actionButton, styles.audioButton, isAudioPlaying && styles.audioButtonPlaying]}
+              style={[pointDetailScreenStyles.actionButton, pointDetailScreenStyles.audioButton, isAudioPlaying && pointDetailScreenStyles.audioButtonPlaying]}
               onPress={handlePlayAudio}
             >
-              <Text style={[styles.buttonText, i18nService.isRTL() && styles.rtlText]}>
+              <Text style={[pointDetailScreenStyles.buttonText, i18nService.isRTL() && pointDetailScreenStyles.rtlText]}>
                 {isAudioPlaying ? `⏹️ ${i18nService.t('stopAudio')}` : `🎵 ${i18nService.t('audioGuide')}`}
               </Text>
             </TouchableOpacity>
 
             {isAudioPlaying && (
-              <View style={styles.audioSecondaryControls}>
+              <View style={pointDetailScreenStyles.audioSecondaryControls}>
                 <TouchableOpacity
-                  style={[styles.actionButton, styles.pauseButton]}
+                  style={[pointDetailScreenStyles.actionButton, pointDetailScreenStyles.pauseButton]}
                   onPress={handlePauseAudio}
                 >
-                  <Text style={[styles.buttonText, i18nService.isRTL() && styles.rtlText]}>
+                  <Text style={[pointDetailScreenStyles.buttonText, i18nService.isRTL() && pointDetailScreenStyles.rtlText]}>
                     ⏸️ {i18nService.t('pauseAudio')}
                   </Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                  style={[styles.actionButton, styles.stopButton]}
+                  style={[pointDetailScreenStyles.actionButton, pointDetailScreenStyles.stopButton]}
                   onPress={handleStopAudio}
                 >
-                  <Text style={[styles.buttonText, i18nService.isRTL() && styles.rtlText]}>
+                  <Text style={[pointDetailScreenStyles.buttonText, i18nService.isRTL() && pointDetailScreenStyles.rtlText]}>
                     ⏹️ {i18nService.t('stopAudio')}
                   </Text>
                 </TouchableOpacity>
@@ -282,21 +284,21 @@ export default function PointDetailScreen() {
 
           <TouchableOpacity
             style={[
-              styles.actionButton, 
-              currentPoint.isVisited ? styles.removeVisitedButton : styles.addVisitedButton
+              pointDetailScreenStyles.actionButton, 
+              currentPoint.isVisited ? pointDetailScreenStyles.removeVisitedButton : pointDetailScreenStyles.addVisitedButton
             ]}
             onPress={handleToggleVisited}
           >
-            <Text style={[styles.buttonText, i18nService.isRTL() && styles.rtlText]}>
+            <Text style={[pointDetailScreenStyles.buttonText, i18nService.isRTL() && pointDetailScreenStyles.rtlText]}>
               {currentPoint.isVisited ? '✓ Посещено' : '+ Отметить посещение'}
             </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={[styles.actionButton, styles.navigateButton]}
+            style={[pointDetailScreenStyles.actionButton, pointDetailScreenStyles.navigateButton]}
             onPress={handleNavigate}
           >
-            <Text style={[styles.buttonText, i18nService.isRTL() && styles.rtlText]}>
+            <Text style={[pointDetailScreenStyles.buttonText, i18nService.isRTL() && pointDetailScreenStyles.rtlText]}>
               🗺️ {i18nService.t('navigate')}
             </Text>
           </TouchableOpacity>
@@ -306,113 +308,3 @@ export default function PointDetailScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  scrollContent: {
-    flexGrow: 1,
-  },
-  mapContainer: {
-    height: 250,
-    margin: 20,
-    borderRadius: 15,
-    overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-  map: {
-    flex: 1,
-  },
-  infoContainer: {
-    padding: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 8,
-  },
-  category: {
-    fontSize: 16,
-    color: '#666',
-    marginBottom: 12,
-    fontStyle: 'italic',
-  },
-  description: {
-    fontSize: 16,
-    color: '#555',
-    lineHeight: 24,
-  },
-  buttonsContainer: {
-    padding: 20,
-    gap: 15,
-  },
-  actionButton: {
-    paddingVertical: 15,
-    paddingHorizontal: 20,
-    borderRadius: 10,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 3.84,
-    elevation: 3,
-  },
-  audioButton: {
-    backgroundColor: '#4CAF50',
-  },
-  audioButtonPlaying: {
-    backgroundColor: '#f44336',
-  },
-  audioControlsContainer: {
-    marginBottom: 15,
-  },
-  audioSecondaryControls: {
-    flexDirection: 'row',
-    gap: 10,
-    marginTop: 10,
-  },
-  pauseButton: {
-    backgroundColor: '#FF9800',
-    flex: 1,
-  },
-  stopButton: {
-    backgroundColor: '#f44336',
-    flex: 1,
-  },
-  navigateButton: {
-    backgroundColor: '#2196F3',
-  },
-  addVisitedButton: {
-    backgroundColor: '#FF9800',
-  },
-  removeVisitedButton: {
-    backgroundColor: '#4CAF50',
-  },
-  visitedInfo: {
-    fontSize: 14,
-    color: '#4CAF50',
-    fontWeight: 'bold',
-    marginTop: 10,
-    fontStyle: 'italic',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  rtlText: {
-    textAlign: 'right',
-  },
-}); 

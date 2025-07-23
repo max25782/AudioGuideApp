@@ -24,6 +24,26 @@ export default {
   showingPointsForCategory: 'Показываю {{count}} точек категории: {{category}}',
   showingAllPoints: 'Показываю все {{count}} точек',
   
+  // Visited points
+  visited: 'Посещенные',
+  visitedPoints: 'Посещенные места',
+  back: 'Назад',
+  statistics: 'Статистика',
+  list: 'Список',
+  map: 'Карта',
+  
+  // Likes and top points
+  likes: 'лайков',
+  like: 'Лайк',
+  unlike: 'Убрать лайк',
+  topPoints: 'Лучшие',
+  topPointsCount: 'Лучшие точки ({{count}})',
+  totalLikes: 'Всего лайков',
+  mostLiked: 'Самая популярная',
+  noLikedPointsYet: 'Пока нет лайкнутых точек',
+  likePointsToSeeThemHere: 'Лайкните точки интереса, чтобы увидеть их здесь',
+  loading: 'Загрузка...',
+  
   // Location
   currentLocation: 'Текущее местоположение',
   myLocation: 'Моё местоположение',
@@ -66,8 +86,7 @@ export default {
   dataLoadError: 'Не удалось загрузить данные',
   initializationError: 'Ошибка инициализации',
   
-  // Statistics
-  statistics: 'Статистика',
+  // Data loading
   dataInitialization: 'Инициализация данных...',
   pointsLoaded: 'Загружено {{count}} точек',
   
@@ -81,4 +100,7 @@ export default {
   // Point descriptions
   descriptionNotAvailable: 'Описание недоступно',
   nameNotAvailable: 'Название недоступно',
+  
+  // View modes
+  allPoints: 'Все точки',
 }; 

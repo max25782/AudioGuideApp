@@ -24,6 +24,26 @@ export default {
   showingPointsForCategory: 'מציג {{count}} נקודות עבור קטגוריה: {{category}}',
   showingAllPoints: 'מציג את כל {{count}} הנקודות',
   
+  // Visited points
+  visited: 'ביקרו',
+  visitedPoints: 'מקומות שביקרו',
+  back: 'חזור',
+  statistics: 'סטטיסטיקות',
+  list: 'רשימה',
+  map: 'מפה',
+  
+  // Likes and top points
+  likes: 'לייקים',
+  like: 'לייק',
+  unlike: 'ביטול לייק',
+  topPoints: 'הטובים ביותר',
+  topPointsCount: 'הנקודות הטובות ביותר ({{count}})',
+  totalLikes: 'סך כל הלייקים',
+  mostLiked: 'הפופולרית ביותר',
+  noLikedPointsYet: 'עדיין אין נקודות שקיבלו לייק',
+  likePointsToSeeThemHere: 'תנו לייק לנקודות עניין כדי לראות אותן כאן',
+  loading: 'טוען...',
+  
   // Location
   currentLocation: 'המיקום הנוכחי',
   myLocation: 'המיקום שלי',
@@ -81,4 +101,7 @@ export default {
   // Point descriptions
   descriptionNotAvailable: 'תיאור לא זמין',
   nameNotAvailable: 'שם לא זמין',
+  
+  // View modes
+  allPoints: 'כל הנקודות',
 }; 

@@ -1,5 +1,4 @@
 import { Audio } from 'expo-av';
-import { Asset } from 'expo-asset';
 
 // Динамический маппинг аудиофайлов - только для существующих файлов
 const audioFiles: { [key: string]: any } = {
@@ -33,12 +32,14 @@ class AudioService {
         return false;
       }
 
-      // Загружаем аудиофайл из assets
-      const asset = Asset.fromModule(audioFiles[audioFilePath]);
-      await asset.downloadAsync();
+      console.log(`🎵 Загружаю аудиофайл: ${audioFilePath}`);
 
-      // Создаем новый звуковой объект
-      const { sound } = await Audio.Sound.createAsync(asset);
+      // Создаем звуковой объект напрямую из require без Asset.downloadAsync
+      const { sound } = await Audio.Sound.createAsync(
+        audioFiles[audioFilePath],
+        { shouldPlay: false }
+      );
+      
       this.sound = sound;
       this.currentAudioPath = audioFilePath;
 
@@ -54,9 +55,10 @@ class AudioService {
         }
       });
 
+      console.log(`✅ Аудиофайл загружен: ${audioFilePath}`);
       return true;
     } catch (error) {
-      console.error('Ошибка загрузки аудиофайла:', error);
+      console.error('❌ Ошибка загрузки аудиофайла:', error);
       return false;
     }
   }

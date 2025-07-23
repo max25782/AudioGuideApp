@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { 
   View, 
   Text, 
-  StyleSheet, 
   TouchableOpacity, 
   Alert,
   SafeAreaView,
@@ -17,12 +16,13 @@ import { audioService } from '../services/AudioService';
 import { wazeService } from '../services/WazeService';
 import i18nService from '../services/I18nService';
 import userService from '../services/UserService';
+import likesService from '../services/LikesService';
 
 import { PointOfInterest, PointCategory, Location, RootStackParamList } from '../types';
 import CategoryFilter from '../components/CategoryFilter';
-import MapView from '../components/MapView';
 import PointsList from '../components/PointsList';
 import SimpleLanguageSelector from '../components/SimpleLanguageSelector';
+import { homeScreenStyles } from '../styles';
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -39,6 +39,8 @@ export function HomeScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [forceUpdate, setForceUpdate] = useState(0);
   const [isLocationTracking, setIsLocationTracking] = useState(false);
+  const [viewMode, setViewMode] = useState<'all' | 'nearby'>('all'); // Новое состояние для режима просмотра
+  const [totalLikes, setTotalLikes] = useState(0); // Состояние для общего количества лайков
   
   // Местоположение по умолчанию - центр Израиля (Иерусалим)
   const [mapLocation, setMapLocation] = useState<Location>({
@@ -52,22 +54,40 @@ export function HomeScreen() {
   const locationService = new LocationService();
 
   useEffect(() => {
-    initializeData();
-    // Автоматически получаем местоположение при загрузке
-    getCurrentLocation();
+    const initialize = async () => {
+      try {
+        await initializeData();
+        // Автоматически получаем местоположение при загрузке
+        getCurrentLocation();
+      } catch (error) {
+        console.error('Критическая ошибка инициализации:', error);
+        Alert.alert('Ошибка', 'Не удалось инициализировать приложение. Попробуйте перезапустить.');
+        setIsLoading(false);
+      }
+    };
+
+    initialize();
     
     // Listen for language changes
     const handleLanguageChange = () => {
       setForceUpdate(prev => prev + 1);
     };
     
-    i18nService.addLanguageChangeListener(handleLanguageChange);
+    try {
+      i18nService.addLanguageChangeListener(handleLanguageChange);
+    } catch (error) {
+      console.error('Ошибка добавления языкового слушателя:', error);
+    }
     
     return () => {
-      i18nService.removeLanguageChangeListener(handleLanguageChange);
-      // Останавливаем отслеживание местоположения при размонтировании
-      if (isLocationTracking) {
-        locationService.stopLocationTracking();
+      try {
+        i18nService.removeLanguageChangeListener(handleLanguageChange);
+        // Останавливаем отслеживание местоположения при размонтировании
+        if (isLocationTracking) {
+          locationService.stopLocationTracking();
+        }
+      } catch (error) {
+        console.error('Ошибка очистки:', error);
       }
     };
   }, []);
@@ -75,14 +95,27 @@ export function HomeScreen() {
   // Функция для обновления точек после автоматического посещения
   const refreshPointsData = async () => {
     try {
-      const updatedPoints = preprocessedDataService.getAllPoints();
+      const basePoints = preprocessedDataService.getAllPoints();
+      
+      // Добавляем информацию о лайках к каждой точке
+      const updatedPoints = basePoints.map(point => ({
+        ...point,
+        likesCount: likesService.getLikesCount(point.id) || 0,
+        isLikedByUser: userService.isPointLikedByUser(point.id) || false,
+      }));
+      
       setAllPoints(updatedPoints);
       
       if (selectedCategory === 'all') {
         setPoints(updatedPoints);
       } else {
         const categoryPoints = preprocessedDataService.getPointsByCategory(selectedCategory);
-        setPoints(categoryPoints);
+        const updatedCategoryPoints = categoryPoints.map(point => ({
+          ...point,
+          likesCount: likesService.getLikesCount(point.id) || 0,
+          isLikedByUser: userService.isPointLikedByUser(point.id) || false,
+        }));
+        setPoints(updatedCategoryPoints);
       }
     } catch (error) {
       console.error('Ошибка обновления точек:', error);
@@ -94,24 +127,42 @@ export function HomeScreen() {
       setIsLoading(true);
       console.log('🚀', i18nService.t('dataInitialization'));
       
+      // Сначала инициализируем сервис лайков
+      await likesService.initialize();
+      
       // Инициализируем пользователя
       const user = await userService.initializeUser();
       console.log('👤 Пользователь инициализирован:', user.id);
       console.log('📈 Всего посещений:', user.totalVisits);
       
       // Загружаем все точки из сервиса (теперь с информацией о посещениях)
-      const loadedPoints = preprocessedDataService.getAllPoints();
-      console.log('✅', i18nService.t('pointsLoaded', { count: loadedPoints.length }));
+      const basePoints = preprocessedDataService.getAllPoints();
+      console.log('✅', i18nService.t('pointsLoaded', { count: basePoints.length }));
+      
+      // Добавляем информацию о лайках к каждой точке
+      const loadedPoints = basePoints.map(point => ({
+        ...point,
+        likesCount: likesService.getLikesCount(point.id) || 0,
+        isLikedByUser: userService.isPointLikedByUser(point.id) || false,
+      }));
       
       const visitedCount = loadedPoints.filter(p => p.isVisited).length;
+      const likedCount = loadedPoints.filter(p => p.isLikedByUser).length;
       console.log('🎯 Посещенных точек:', visitedCount);
+      console.log('❤️ Лайкнутых точек:', likedCount);
       
       setAllPoints(loadedPoints);
+      
+      // Устанавливаем режим "все" по умолчанию
+      setViewMode('all');
       setPoints(loadedPoints);
       
       // Получаем статистику
       const stats = preprocessedDataService.getStatistics();
       console.log('📊', i18nService.t('statistics'), stats);
+      
+      // Обновляем общее количество лайков
+      setTotalLikes(likesService.getTotalLikesCount());
       
     } catch (error) {
       console.error('❌', i18nService.t('initializationError'), error);
@@ -141,24 +192,52 @@ export function HomeScreen() {
     }
   };
 
-  const updateNearbyPointsWithCategory = async (categoryId: PointCategory | 'all', lat?: number, lon?: number) => {
+  const updateNearbyPointsWithCategory = async (
+    categoryId: PointCategory | 'all', 
+    mode: 'all' | 'nearby' = viewMode,
+    lat?: number, 
+    lon?: number
+  ) => {
     try {
-      let nearbyPoints: PointOfInterest[] = [];
+      let filteredPoints: PointOfInterest[] = [];
       
-      if (categoryId === 'all') {
-        // Для "Все" всегда показываем все точки
-        nearbyPoints = allPoints;
-        console.log('🔍', i18nService.t('showingAllPoints', { count: nearbyPoints.length }));
+      if (mode === 'nearby' && currentLocation) {
+        // Режим "ближайшие" - показываем только ближайшие точки
+        if (categoryId === 'all') {
+          filteredPoints = preprocessedDataService.getNearbyPoints(
+            currentLocation.latitude, 
+            currentLocation.longitude, 
+            15000
+          );
+          console.log('🔍 Показываю ближайшие точки:', filteredPoints.length);
+        } else {
+          filteredPoints = preprocessedDataService.getNearbyPointsByCategory(
+            currentLocation.latitude, 
+            currentLocation.longitude, 
+            categoryId, 
+            15000
+          );
+          console.log('🔍 Показываю ближайшие точки категории', i18nService.t(categoryId) + ':', filteredPoints.length);
+        }
       } else {
-        // Для конкретных категорий показываем только эту категорию
-        nearbyPoints = preprocessedDataService.getPointsByCategory(categoryId);
-        console.log('🔍', i18nService.t('showingPointsForCategory', { 
-          count: nearbyPoints.length, 
-          category: i18nService.t(categoryId) 
-        }));
+        // Режим "все" - показываем все точки
+        if (categoryId === 'all') {
+          filteredPoints = allPoints;
+          console.log('🔍 Показываю все точки:', filteredPoints.length);
+        } else {
+          filteredPoints = preprocessedDataService.getPointsByCategory(categoryId);
+          console.log('🔍 Показываю все точки категории', i18nService.t(categoryId) + ':', filteredPoints.length);
+        }
       }
       
-      setPoints(nearbyPoints);
+      // Добавляем информацию о лайках к отфильтрованным точкам
+      const pointsWithLikes = filteredPoints.map(point => ({
+        ...point,
+        likesCount: likesService.getLikesCount(point.id) || 0,
+        isLikedByUser: userService.isPointLikedByUser(point.id) || false,
+      }));
+      
+      setPoints(pointsWithLikes);
       
     } catch (error) {
       console.error('❌ Ошибка обновления точек:', error);
@@ -190,22 +269,44 @@ export function HomeScreen() {
     }
   };
 
+  const handleToggleLike = async (point: PointOfInterest) => {
+    try {
+      const newLikedStatus = await userService.togglePointLike(point.id);
+      
+      // Обновляем список точек
+      await refreshPointsData();
+      
+      // Обновляем общее количество лайков
+      setTotalLikes(likesService.getTotalLikesCount());
+      
+      console.log(`❤️ Точка ${point.id} ${newLikedStatus ? 'лайкнута' : 'лайк убран'}`);
+    } catch (error) {
+      console.error('Ошибка изменения лайка:', error);
+      Alert.alert(i18nService.t('error'), 'Не удалось изменить лайк');
+    }
+  };
+
+  const showAllPoints = async () => {
+    try {
+      // Устанавливаем режим "все"
+      setViewMode('all');
+      
+      // Используем обновленную функцию фильтрации с явным указанием режима
+      await updateNearbyPointsWithCategory(selectedCategory, 'all');
+      
+      console.log('🔍 Переключен в режим "все точки"');
+    } catch (error) {
+      console.error('❌ Ошибка показа всех точек:', error);
+    }
+  };
+
   const showNearbyPoints = async (latitude: number, longitude: number) => {
     try {
-      let nearbyPoints: PointOfInterest[] = [];
+      // Устанавливаем режим "ближайшие"
+      setViewMode('nearby');
       
-      if (selectedCategory === 'all') {
-        nearbyPoints = preprocessedDataService.getNearbyPoints(latitude, longitude, 15000);
-        console.log('🔍', i18nService.t('showingNearbyPoints', { count: nearbyPoints.length }));
-      } else {
-        nearbyPoints = preprocessedDataService.getNearbyPointsByCategory(latitude, longitude, selectedCategory, 15000);
-        console.log('🔍', i18nService.t('showingPointsForCategory', { 
-          count: nearbyPoints.length, 
-          category: i18nService.t(selectedCategory) 
-        }));
-      }
-      
-      setPoints(nearbyPoints);
+      // Используем обновленную функцию фильтрации с явным указанием режима
+      await updateNearbyPointsWithCategory(selectedCategory, 'nearby');
 
       // Запускаем отслеживание местоположения для автоматической отметки посещений
       if (!isLocationTracking) {
@@ -233,12 +334,15 @@ export function HomeScreen() {
     if (currentLocation) {
       await showNearbyPoints(currentLocation.latitude, currentLocation.longitude);
     }
+    // Обновляем общее количество лайков
+    setTotalLikes(likesService.getTotalLikesCount());
     setRefreshing(false);
   };
 
   const playAudio = async (point: PointOfInterest) => {
     try {
-      const success = await audioService.playPointAudio(point.audioFilePath);
+      const audioPath = point.audioFilePath || `${point.id}.mp3`;
+      const success = await audioService.playPointAudio(audioPath);
       if (success) {
         // Отмечаем точку как посещенную с воспроизведенным аудио
         await preprocessedDataService.markPointAsVisited(
@@ -327,81 +431,90 @@ export function HomeScreen() {
 
   if (isLoading) {
     return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.loadingContainer}>
-          <Text style={styles.loadingText}>{i18nService.t('dataInitialization')}</Text>
+      <SafeAreaView style={homeScreenStyles.container}>
+        <View style={homeScreenStyles.loadingContainer}>
+          <Text style={homeScreenStyles.loadingText}>{i18nService.t('dataInitialization')}</Text>
         </View>
       </SafeAreaView>
     );
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={homeScreenStyles.container}>
       {/* Header */}
-      <View style={styles.header}>
-        <View style={styles.headerTop}>
-          <Text style={[styles.title, i18nService.isRTL() && styles.rtlText]}>
+      <View style={homeScreenStyles.header}>
+        <View style={homeScreenStyles.headerTop}>
+          <Text style={[homeScreenStyles.title, i18nService.isRTL() && homeScreenStyles.rtlText]}>
             {i18nService.t('pointsOfInterest')}
           </Text>
           <SimpleLanguageSelector />
         </View>
-        <Text style={[styles.subtitle, i18nService.isRTL() && styles.rtlText]}>
+        <Text style={[homeScreenStyles.subtitle, i18nService.isRTL() && homeScreenStyles.rtlText]}>
           {i18nService.t('pointsCount', { count: points.length })}
         </Text>
       </View>
 
-      {/* Location Button */}
-      <TouchableOpacity 
-        style={styles.locationButton}
-        onPress={getCurrentLocation}
-        disabled={isLocationLoading}
-      >
-        <Text style={[styles.locationButtonText, i18nService.isRTL() && styles.rtlText]}>
-          {isLocationLoading ? i18nService.t('gettingLocation') : `📍 ${i18nService.t('nearbyPoints')}`}
-        </Text>
-      </TouchableOpacity>
+      {/* Action Buttons Row */}
+      <View style={homeScreenStyles.actionButtonsRow}>
+        <TouchableOpacity 
+          style={homeScreenStyles.locationButton}
+          onPress={getCurrentLocation}
+          disabled={isLocationLoading}
+        >
+          <Text style={[homeScreenStyles.locationButtonText, i18nService.isRTL() && homeScreenStyles.rtlText]}>
+            {isLocationLoading ? i18nService.t('gettingLocation') : `📍 ${i18nService.t('nearbyPoints')}`}
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity 
+          style={homeScreenStyles.locationButton}
+          onPress={showAllPoints}
+        >
+          <Text style={[homeScreenStyles.locationButtonText, i18nService.isRTL() && homeScreenStyles.rtlText]}>
+            🌍 {i18nService.t('allPoints')}
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Visited Points Button Row */}
+      <View style={homeScreenStyles.visitedButtonsRow}>
+        <TouchableOpacity
+          style={homeScreenStyles.visitedScreenButton}
+          onPress={() => navigation.navigate('VisitedPoints')}
+        >
+          <Text style={homeScreenStyles.visitedScreenText}>
+            🎯 {i18nService.t('visited')} ({userService.getCurrentUser()?.totalVisits || 0})
+          </Text>
+          <Text style={homeScreenStyles.visitedScreenArrow}>→</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity
+          style={homeScreenStyles.visitedScreenButton}
+          onPress={() => navigation.navigate('TopPoints')}
+        >
+          <Text style={homeScreenStyles.visitedScreenText}>
+            🔥 {i18nService.t('topPoints')} ({totalLikes})
+          </Text>
+          <Text style={homeScreenStyles.visitedScreenArrow}>→</Text>
+        </TouchableOpacity>
+      </View>
 
       {/* Category Filter */}
-                <CategoryFilter
-            categories={getAvailableCategories()}
-            selectedCategory={selectedCategory}
-            onCategorySelect={handleCategorySelect}
-            getCategoryName={getCategoryName}
-            getCategoryColor={getCategoryColor}
-          />
-          
-          {/* Кнопка для показа только посещенных точек */}
-          <TouchableOpacity
-            style={[
-              styles.visitedFilterButton,
-              selectedCategory === 'visited' && styles.visitedFilterButtonActive
-            ]}
-            onPress={() => {
-              if (selectedCategory === 'visited') {
-                setSelectedCategory('all');
-                setPoints(allPoints);
-              } else {
-                setSelectedCategory('visited' as any);
-                const visitedPoints = preprocessedDataService.getVisitedPoints();
-                setPoints(visitedPoints);
-              }
-            }}
-          >
-            <Text style={[
-              styles.visitedFilterText,
-              selectedCategory === 'visited' && styles.visitedFilterTextActive
-            ]}>
-              🎯 Посещенные ({userService.getCurrentUser()?.totalVisits || 0})
-            </Text>
-          </TouchableOpacity>
+      <CategoryFilter
+        categories={getAvailableCategories()}
+        selectedCategory={selectedCategory}
+        onCategorySelect={handleCategorySelect}
+        getCategoryName={getCategoryName}
+        getCategoryColor={getCategoryColor}
+      />
 
-      {/* Map - всегда показываем */}
-      <MapView
+      {/* Map - временно отключен для улучшения производительности */}
+      {/* <MapView
         currentLocation={mapLocation}
         points={points.slice(0, 50)} // Ограничиваем для производительности
         onPointPress={handlePointPress}
         getCategoryColor={getCategoryColor}
-      />
+      /> */}
 
       {/* Points List - теперь без ScrollView */}
       <PointsList
@@ -410,6 +523,7 @@ export function HomeScreen() {
         onPlayAudio={playAudio}
         onOpenInWaze={openInWaze}
         onToggleVisited={handleToggleVisited}
+        onToggleLike={handleToggleLike}
         formatPointInfo={formatPointInfo}
         getCategoryColor={getCategoryColor}
         refreshing={refreshing}
@@ -419,75 +533,3 @@ export function HomeScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loadingText: {
-    fontSize: 18,
-    color: '#666',
-  },
-  header: {
-    padding: 20,
-    backgroundColor: '#f8f9fa',
-  },
-  headerTop: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 5,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333',
-    flex: 1,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: '#666',
-  },
-  rtlText: {
-    textAlign: 'right',
-  },
-  locationButton: {
-    margin: 20,
-    padding: 15,
-    backgroundColor: '#007AFF',
-    borderRadius: 10,
-    alignItems: 'center',
-  },
-  locationButtonText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#fff',
-  },
-  // Стили для кнопки посещенных точек
-  visitedFilterButton: {
-    margin: 10,
-    padding: 12,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 8,
-    alignItems: 'center',
-    borderWidth: 2,
-    borderColor: 'transparent',
-  },
-  visitedFilterButtonActive: {
-    backgroundColor: '#4CAF50',
-    borderColor: '#45a049',
-  },
-  visitedFilterText: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#666',
-  },
-  visitedFilterTextActive: {
-    color: '#fff',
-  },
-}); 

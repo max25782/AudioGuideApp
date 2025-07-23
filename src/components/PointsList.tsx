@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, RefreshControl } from 'react-native';
 import { PointOfInterest, PointCategory } from '../types';
 import i18nService from '../services/I18nService';
+import { pointsListStyles } from '../styles';
 
 export interface PointsListProps {
   points: PointOfInterest[];
@@ -9,6 +10,7 @@ export interface PointsListProps {
   onPlayAudio: (point: PointOfInterest) => void;
   onOpenInWaze: (point: PointOfInterest) => void;
   onToggleVisited: (point: PointOfInterest) => void;
+  onToggleLike: (point: PointOfInterest) => void;
   formatPointInfo: (point: PointOfInterest) => { title: string; subtitle: string; coords: string };
   getCategoryColor: (category: PointCategory) => string;
   refreshing?: boolean;
@@ -21,6 +23,7 @@ export default function PointsList({
   onPlayAudio,
   onOpenInWaze,
   onToggleVisited,
+  onToggleLike,
   formatPointInfo,
   getCategoryColor,
   refreshing = false,
@@ -61,6 +64,13 @@ export default function PointsList({
               Посещено: {new Date(item.visitedAt).toLocaleDateString()}
             </Text>
           )}
+          
+          {/* Показываем количество лайков, если они есть */}
+          {(item.likesCount || 0) > 0 && (
+            <Text style={[styles.likesCount, i18nService.isRTL() && styles.rtlText]}>
+              ❤️ {item.likesCount} {i18nService.t('likes')}
+            </Text>
+          )}
         </View>
         
         <View style={styles.buttonsContainer}>
@@ -80,6 +90,18 @@ export default function PointsList({
           >
             <Text style={styles.buttonText}>
               {item.isVisited ? '✓' : '+'}
+            </Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity
+            style={[
+              styles.actionButton, 
+              item.isLikedByUser ? styles.likedButton : styles.likeButton
+            ]}
+            onPress={() => onToggleLike(item)}
+          >
+            <Text style={styles.buttonText}>
+              {item.isLikedByUser ? '❤️' : '🤍'}
             </Text>
           </TouchableOpacity>
           
@@ -122,115 +144,4 @@ export default function PointsList({
   );
 }
 
-const styles = StyleSheet.create({
-  list: {
-    flex: 1,
-    paddingHorizontal: 20,
-  },
-  header: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 15,
-    marginTop: 10,
-    color: '#333',
-  },
-  listContent: {
-    paddingBottom: 20,
-  },
-  pointItem: {
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    padding: 15,
-    marginBottom: 10,
-    borderLeftWidth: 4,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-  pointInfo: {
-    flex: 1,
-    marginRight: 10,
-  },
-  pointTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 5,
-  },
-  pointSubtitle: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 3,
-  },
-  pointCoords: {
-    fontSize: 12,
-    color: '#999',
-  },
-  buttonsContainer: {
-    flexDirection: 'row',
-    gap: 10,
-  },
-  actionButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  audioButton: {
-    backgroundColor: '#4CAF50',
-  },
-  wazeButton: {
-    backgroundColor: '#2196F3',
-  },
-  addVisitedButton: {
-    backgroundColor: '#FF9800',
-  },
-  removeVisitedButton: {
-    backgroundColor: '#4CAF50',
-  },
-  buttonText: {
-    fontSize: 16,
-  },
-  rtlText: {
-    textAlign: 'right',
-  },
-  // Стили для посещенных точек
-  visitedPointItem: {
-    backgroundColor: '#f0f8ff',
-    borderColor: '#4CAF50',
-  },
-  titleRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 5,
-  },
-  visitedBadge: {
-    backgroundColor: '#4CAF50',
-    borderRadius: 12,
-    width: 24,
-    height: 24,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  visitedBadgeText: {
-    color: 'white',
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
-  visitedDate: {
-    fontSize: 11,
-    color: '#4CAF50',
-    fontStyle: 'italic',
-    marginTop: 2,
-  },
-}); 
+const styles = pointsListStyles; 

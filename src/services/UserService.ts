@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { User, VisitedPoint, UserSettings, PointOfInterest, PointCategory } from '../types';
+import { User, VisitedPoint, UserSettings, PointOfInterest, PointCategory, UserLike } from '../types';
+import likesService from './LikesService';
 
 class UserService {
   private static instance: UserService;
@@ -25,6 +26,9 @@ class UserService {
    */
   async initializeUser(): Promise<User> {
     try {
+      // Инициализируем сервис лайков
+      await likesService.initialize();
+
       // Попытка загрузить существующего пользователя
       const userData = await AsyncStorage.getItem(this.USER_KEY);
       
@@ -36,6 +40,20 @@ class UserService {
           this.currentUser.visitedPoints = this.currentUser.visitedPoints.map(point => ({
             ...point,
             visitedAt: new Date(point.visitedAt)
+          }));
+          
+          // Обработка лайков для совместимости со старыми версиями
+          if (!this.currentUser.likedPoints) {
+            this.currentUser.likedPoints = [];
+          }
+          if (this.currentUser.totalLikes === undefined) {
+            this.currentUser.totalLikes = 0;
+          }
+          
+          // Конвертируем даты лайков
+          this.currentUser.likedPoints = this.currentUser.likedPoints.map(like => ({
+            ...like,
+            likedAt: new Date(like.likedAt)
           }));
         }
       } else {
@@ -64,6 +82,8 @@ class UserService {
       createdAt: new Date(),
       visitedPoints: [],
       totalVisits: 0,
+      likedPoints: [],
+      totalLikes: 0,
     };
 
     await this.saveUser(newUser);
@@ -289,6 +309,93 @@ class UserService {
       user: this.currentUser,
       settings: this.userSettings,
     };
+  }
+
+  /**
+   * Поставить лайк точке
+   */
+  async likePoint(pointId: string): Promise<void> {
+    if (!this.currentUser) {
+      throw new Error('Пользователь не инициализирован');
+    }
+
+    // Проверяем, не лайкнул ли пользователь уже эту точку
+    const alreadyLiked = this.currentUser.likedPoints.some(like => like.pointId === pointId);
+    if (alreadyLiked) {
+      return;
+    }
+
+    // Добавляем лайк в данные пользователя
+    const userLike: UserLike = {
+      pointId,
+      likedAt: new Date(),
+    };
+
+    this.currentUser.likedPoints.push(userLike);
+    this.currentUser.totalLikes++;
+
+    // Добавляем лайк в общую статистику
+    await likesService.addLike(pointId);
+
+    await this.saveUser(this.currentUser);
+    console.log(`Пользователь поставил лайк точке ${pointId}`);
+  }
+
+  /**
+   * Убрать лайк с точки
+   */
+  async unlikePoint(pointId: string): Promise<void> {
+    if (!this.currentUser) {
+      throw new Error('Пользователь не инициализирован');
+    }
+
+    // Удаляем лайк из данных пользователя
+    const initialLength = this.currentUser.likedPoints.length;
+    this.currentUser.likedPoints = this.currentUser.likedPoints.filter(
+      like => like.pointId !== pointId
+    );
+
+    // Обновляем счетчик, если лайк был удален
+    const removedCount = initialLength - this.currentUser.likedPoints.length;
+    if (removedCount > 0) {
+      this.currentUser.totalLikes = Math.max(0, this.currentUser.totalLikes - removedCount);
+      
+      // Убираем лайк из общей статистики
+      await likesService.removeLike(pointId);
+      
+      await this.saveUser(this.currentUser);
+      console.log(`Пользователь убрал лайк с точки ${pointId}`);
+    }
+  }
+
+  /**
+   * Переключить лайк точки
+   */
+  async togglePointLike(pointId: string): Promise<boolean> {
+    const isCurrentlyLiked = this.isPointLikedByUser(pointId);
+    
+    if (isCurrentlyLiked) {
+      await this.unlikePoint(pointId);
+      return false;
+    } else {
+      await this.likePoint(pointId);
+      return true;
+    }
+  }
+
+  /**
+   * Проверка, лайкнул ли пользователь точку
+   */
+  isPointLikedByUser(pointId: string): boolean {
+    if (!this.currentUser || !this.currentUser.likedPoints) return false;
+    return this.currentUser.likedPoints.some(like => like.pointId === pointId);
+  }
+
+  /**
+   * Получение всех лайкнутых пользователем точек
+   */
+  getLikedPoints(): UserLike[] {
+    return this.currentUser?.likedPoints || [];
   }
 }
 

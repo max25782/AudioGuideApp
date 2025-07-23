@@ -24,6 +24,26 @@ export default {
   showingPointsForCategory: 'Showing {{count}} points for category: {{category}}',
   showingAllPoints: 'Showing all {{count}} points',
   
+  // Visited points
+  visited: 'Visited',
+  visitedPoints: 'Visited Places',
+  back: 'Back',
+  statistics: 'Statistics',
+  list: 'List',
+  map: 'Map',
+  
+  // Likes and top points
+  likes: 'likes',
+  like: 'Like',
+  unlike: 'Unlike',
+  topPoints: 'Top',
+  topPointsCount: 'Top points ({{count}})',
+  totalLikes: 'Total likes',
+  mostLiked: 'Most popular',
+  noLikedPointsYet: 'No liked points yet',
+  likePointsToSeeThemHere: 'Like points of interest to see them here',
+  loading: 'Loading...',
+  
   // Location
   currentLocation: 'Current Location',
   myLocation: 'My Location',
@@ -66,8 +86,7 @@ export default {
   dataLoadError: 'Could not load data',
   initializationError: 'Initialization Error',
   
-  // Statistics
-  statistics: 'Statistics',
+  // Data loading
   dataInitialization: 'Data initialization...',
   pointsLoaded: 'Loaded {{count}} points',
   
@@ -81,4 +100,7 @@ export default {
   // Point descriptions
   descriptionNotAvailable: 'Description not available',
   nameNotAvailable: 'Name not available',
+  
+  // View modes
+  allPoints: 'All Points',
 }; 

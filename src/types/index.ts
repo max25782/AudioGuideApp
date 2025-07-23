@@ -20,6 +20,9 @@ export interface PointOfInterest {
   // Статус посещения для текущего пользователя
   isVisited?: boolean;
   visitedAt?: Date;
+  // Система лайков
+  likesCount?: number;
+  isLikedByUser?: boolean;
 }
 
 export interface Location {
@@ -48,6 +51,12 @@ export interface VisitedPoint {
   audioPlayed?: boolean; // был ли воспроизведен аудиогид
 }
 
+// Интерфейс для лайков пользователя
+export interface UserLike {
+  pointId: string;
+  likedAt: Date;
+}
+
 // Интерфейс пользователя
 export interface User {
   id: string;
@@ -55,6 +64,9 @@ export interface User {
   visitedPoints: VisitedPoint[];
   totalVisits: number;
   favoriteCategory?: PointCategory;
+  // Лайки пользователя
+  likedPoints: UserLike[];
+  totalLikes: number;
 }
 
 // Настройки приложения для пользователя
@@ -69,4 +81,5 @@ export type RootStackParamList = {
   Home: undefined;
   PointDetail: { point: PointOfInterest };
   VisitedPoints: undefined;
+  TopPoints: undefined;
 }; 
